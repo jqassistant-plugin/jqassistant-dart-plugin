@@ -1,0 +1,39 @@
+---
+name: CI-Dart
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - 'java/**'
+      - 'README.md'
+    tags-ignore:
+      - "*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: { }
+
+concurrency:
+  group: build-dart-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+
+      - run: dart pub get
+        working-directory: ./dart
+      - run: dart analyze
+        working-directory: ./dart
+      - run: dart test
+        working-directory: ./dart

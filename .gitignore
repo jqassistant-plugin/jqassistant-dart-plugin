@@ -27,3 +27,5 @@ docs/content/.obsidian/workspace.json
 
 # jQA
 **/.reports/jqa/
+**/jqassistant/report/
+**/jqassistant/store/
