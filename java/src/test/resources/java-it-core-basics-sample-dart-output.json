@@ -1,0 +1,19 @@
+[
+  {
+    "name": "test-package",
+    "fqn": "package:test-package",
+    "packagePath": "/java/src/test/resources/java-it-core-basics-sample-package",
+    "concepts": {
+      "library": [
+        {
+          "fqn": "package:test-package/a.dart",
+          "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/a.dart"
+        },
+        {
+          "fqn": "package:test-package/b.dart",
+          "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/b.dart"
+        }
+      ]
+    }
+  }
+]

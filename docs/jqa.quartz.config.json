@@ -1,10 +1,8 @@
 {
-  "baseUrl": "jqassistant-plugin.github.io/jqassistant-example-plugin",
-  "pageTitle": "jQA Example Plugin",
+  "baseUrl": "jqassistant-plugin.github.io/jqassistant-dart-plugin",
+  "pageTitle": "jQA Dart Plugin",
   "footerLinks": {
-    "Maven": "https://mvnrepository.com/artifact/org.jqassistant.plugin/jqassistant-example-plugin",
-    "Source": "https://github.com/jqassistant-plugin/jqassistant-example-plugin?tab=readme-ov-file",
-    "Issues": "https://github.com/jqassistant-plugin/jqassistant-example-plugin/issues",
-    "Sonar": "https://sonarcloud.io/project/overview?id=org.jqassistant.plugin%3Ajqassistant-example-plugin"
+    "Source": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin",
+    "Issues": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin/issues"
   }
 }

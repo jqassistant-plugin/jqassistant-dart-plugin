@@ -21,3 +21,6 @@ target
 
 # Docs
 docs/content/.obsidian/workspace.json
+
+# jQA
+**/.reports/jqa/
