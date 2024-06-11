@@ -35,5 +35,5 @@ jobs:
         working-directory: ./dart
       - run: dart analyze
         working-directory: ./dart
-      - run: dart test
+      - run: dart test integration_test
         working-directory: ./dart
