@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
+      - 'dart/**'
+      - 'README.md'
     tags-ignore:
       - "*"
   pull_request:
