@@ -19,6 +19,9 @@ pom.xml.updatetonextdevversion
 target
 /.mvn
 
+# Dart
+/dart/.dart_tool/
+
 # Docs
 docs/content/.obsidian/workspace.json
 
