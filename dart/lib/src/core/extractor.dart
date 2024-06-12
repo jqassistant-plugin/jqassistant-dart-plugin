@@ -39,8 +39,8 @@ Future<List<LCEPackage>> processPackages(String scanRoot) async {
 
   final packagePaths = await determinePackagePaths(scanRoot);
   for (final packagePath in packagePaths) {
-    LCEPackageInfo packageInfo =
-        LCEPackageInfo(packagePath, determinePackageName(packagePath));
+    LCEPackageInfo packageInfo = LCEPackageInfo(
+        packagePath.replaceAll("\\", "/"), determinePackageName(packagePath));
     ConceptMap concepts = {};
 
     // Processing
@@ -50,8 +50,8 @@ Future<List<LCEPackage>> processPackages(String scanRoot) async {
       CompilationUnit unit = parseFile(
               path: libraryPath, featureSet: FeatureSet.latestLanguageVersion())
           .unit;
-      ConceptMap? extractedConcepts =
-          unit.accept(Traverser(GlobalContext(packageInfo, libraryPath)));
+      ConceptMap? extractedConcepts = unit.accept(Traverser(
+          GlobalContext(packageInfo, libraryPath.replaceAll("\\", "/"))));
       if (extractedConcepts != null) {
         mergeConceptMaps([concepts, extractedConcepts]);
       }

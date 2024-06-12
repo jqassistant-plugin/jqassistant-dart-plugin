@@ -10,7 +10,8 @@ String normPath(String packagePath, String path) {
           packagePath +
           separator +
           path)
-      .resolveSymbolicLinksSync();
+      .resolveSymbolicLinksSync()
+      .replaceAll("\\", "/");
 }
 
 Matcher expectLibary(String fqn, String path) => predicate((LCELibrary v) {

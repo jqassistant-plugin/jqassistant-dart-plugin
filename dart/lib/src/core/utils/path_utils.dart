@@ -6,6 +6,7 @@ import 'package:path/path.dart';
  */
 String convertLibraryPathToFQN(
     LCEPackageInfo packageInfo, String libraryPathAbsolute) {
-  return libraryPathAbsolute.replaceFirst(join(packageInfo.packagePath, "lib"),
+  return libraryPathAbsolute.replaceFirst(
+      join(packageInfo.packagePath, "lib").replaceAll("\\", "/"),
       "package:" + packageInfo.packageName);
 }
