@@ -42,7 +42,7 @@ jobs:
         working-directory: ./dart
       - run: mkdir ${{ matrix.runs-on }}
         working-directory: ./dart
-      - run: dart compile exe bin/jqa_dart_.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - run: dart compile exe bin/jqa_dart_lce.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
         working-directory: ./dart
       - uses: actions/upload-artifact@v2
         with:
