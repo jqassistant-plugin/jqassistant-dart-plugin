@@ -39,7 +39,7 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
-        runs-on: [ ubuntu-latest, windows-latest, macos-latest ]
+        runs-on: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
         include:
           - runs-on: ubuntu-latest
             binary-name: jqa_dart_lce_linux_amd64
