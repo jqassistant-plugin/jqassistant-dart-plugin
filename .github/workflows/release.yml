@@ -63,7 +63,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
-    needs: dart-build
+    needs: [ dart-build, maven-release ]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
