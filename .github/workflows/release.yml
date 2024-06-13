@@ -1,0 +1,59 @@
+---
+name: Release-Maven
+
+on:
+  workflow_dispatch:
+#    inputs:
+#      java_version:
+#        description: Java version to use
+#        type: string
+#        required: false
+#        default: 17
+#      branch:
+#        description: "The branch to checkout when cutting the release."
+#        required: true
+#        default: "main"
+#      releaseVersion:
+#        description: "Default version to use when preparing a release."
+#        required: true
+#        default: "X.Y.Z"
+#      developmentVersion:
+#        description: "Default version to use for new local working copy."
+#        required: true
+#        default: "X.Y.Z-SNAPSHOT"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        include:
+          - os: ubuntu-latest
+            output-name: jqa_dart_lce_linux_amd64
+          - os: macos-latest
+            output-name: jqa_dart_lce_macos_amd64
+          - os: windows-latest
+            output-name: jqa_dart_lce_windows_amd64.exe
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - run: mkdir ${{ matrix.runs-on }}
+      - run: dart compile exe bin/jqa_dart_.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: bin-${{ matrix.runs-on }}
+          path: ${{ matrix.runs-on }}
+#  release:
+#    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
+#    with:
+#      branch: ${{ github.event.inputs.branch }}
+#      releaseVersion: ${{ github.event.inputs.releaseVersion }}
+#      developmentVersion: ${{ github.event.inputs.developmentVersion }}
+#    secrets:
+#      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+#      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+#      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
+#      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+#      sonar_token: ${{ secrets.SONAR_TOKEN }}
