@@ -24,16 +24,16 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        runs-on: [ ubuntu-latest, windows-latest, macos-latest ]
         include:
-          - os: ubuntu-latest
+          - runs-on: ubuntu-latest
             output-name: jqa_dart_lce_linux_amd64
-          - os: macos-latest
+          - runs-on: macos-latest
             output-name: jqa_dart_lce_macos_amd64
-          - os: windows-latest
+          - runs-on: windows-latest
             output-name: jqa_dart_lce_windows_amd64.exe
     steps:
       - uses: actions/checkout@v2
