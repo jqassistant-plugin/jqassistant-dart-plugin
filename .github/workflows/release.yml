@@ -30,11 +30,11 @@ jobs:
         runs-on: [ ubuntu-latest, windows-latest, macos-latest ]
         include:
           - runs-on: ubuntu-latest
-            output-name: jqa_dart_lce_linux_amd64
+            binary-name: jqa_dart_lce_linux_amd64
           - runs-on: macos-latest
-            output-name: jqa_dart_lce_macos_amd64
+            binary-name: jqa_dart_lce_macos_amd64
           - runs-on: windows-latest
-            output-name: jqa_dart_lce_windows_amd64.exe
+            binary-name: jqa_dart_lce_windows_amd64.exe
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
