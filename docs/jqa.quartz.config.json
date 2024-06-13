@@ -3,6 +3,7 @@
   "pageTitle": "jQA Dart Plugin",
   "footerLinks": {
     "Source": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin",
-    "Issues": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin/issues"
+    "Issues": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin/issues",
+    "Sonar": "https://sonarcloud.io/project/overview?id=org.jqassistant.plugin.dart%3Aparent"
   }
 }

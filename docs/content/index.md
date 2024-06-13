@@ -28,8 +28,8 @@ instructions and basic usage
 - [[Node - Dart Library|:Dart:Library]]
 - [[Node - Dart Class|:Dart:Class]]
 
+%%
 *TODO:*
-
 - mixins
   - modifiers: `base`
 - enums
@@ -38,4 +38,5 @@ instructions and basic usage
 - typedefs
 - functions
 - global variable declarations
+  %%
 ## Development

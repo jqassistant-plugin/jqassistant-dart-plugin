@@ -1,11 +1,11 @@
 # jQAssistant Dart Plugin
 
-> NOTE: This plugin is in active development. Expect limited feature sets and (partially) incorrect behaviors.
+> NOTE: This plugin is in active development. Expect limited feature sets and unexpected behaviors
 
 This is the [Dart](https://dart.dev) Plugin of [jQAssistant](https://jqassistant.org).
 It provides a tool to extract language concepts from Dart code and a scanner for the resulting JSON files.
 
-> For more info, refer to the **[Documentation](https://jqassistant-plugin.github.io/jqassistant-dart-plugin)**
+**For more information, refer to the [Documentation](https://jqassistant-plugin.github.io/jqassistant-dart-plugin)**
 
 ## Installation & Basic Usage (WIP)
 
