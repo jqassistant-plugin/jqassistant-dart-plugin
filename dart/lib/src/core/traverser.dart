@@ -15,6 +15,11 @@ final class Traverser extends UnifyingAstVisitor<ConceptMap> {
   LocalContexts localContexts = LocalContexts();
   List<MetadataAssignmentRule> metadataAssignments = [];
 
+  /**
+   * stack of ConceptMap lists to keep track of all the processing results on the individual AST levels
+   */
+  List<List<ConceptMap>> childConceptStack = [[]];
+
   Traverser(this.globalContext);
 
   /**
@@ -44,7 +49,10 @@ final class Traverser extends UnifyingAstVisitor<ConceptMap> {
     // process children
     ConceptMap childConcepts = {};
     if (traverseChildren) {
-      childConcepts = visitNode(node) ?? {};
+      childConceptStack.add([]);
+      visitNode(node);
+      childConcepts = mergeConceptMaps(childConceptStack.last);
+      childConceptStack.removeLast();
     }
 
     // post-processing
@@ -75,11 +83,18 @@ final class Traverser extends UnifyingAstVisitor<ConceptMap> {
       }
     }
 
-    return mergeConceptMaps([childConcepts, ...concepts]);
+    final result = mergeConceptMaps([childConcepts, ...concepts]);
+    childConceptStack.last.add(result);
+    return result;
   }
 
   @override
   ConceptMap? visitCompilationUnit(CompilationUnit node) {
-    return traverse(AstNodeType.compilationUnit, node);
+    return traverse(AstNodeType.compilationUnit, node, traverseChildren: true);
+  }
+
+  @override
+  ConceptMap? visitClassDeclaration(ClassDeclaration node) {
+    return traverse(AstNodeType.classDeclaration, node);
   }
 }

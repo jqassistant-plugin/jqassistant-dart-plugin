@@ -5,6 +5,7 @@ import com.buschmais.jqassistant.core.test.plugin.AbstractPluginIT;
 import org.jqassistant.plugin.dart.TestUtils;
 import org.jqassistant.plugin.dart.api.DartScope;
 import org.jqassistant.plugin.dart.api.model.core.PackageDescriptor;
+import org.jqassistant.plugin.dart.core.basics.assertions.DeclarationAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -53,10 +54,13 @@ class DartScannerCoreBasicsIT extends AbstractPluginIT {
             .isEqualTo(utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/pubspec.yaml"));
 
         assertThat(packageDescriptor.getLibraries())
-            .as("package has two libraries under lib/")
-            .hasSize(2)
+            .as("package has two expected empty libraries under lib/")
             .anySatisfy(lib -> assertThat(lib.getFqn()).isEqualTo("package:test-package/a.dart"))
             .anySatisfy(lib -> assertThat(lib.getFqn()).isEqualTo("package:test-package/b.dart"));
+
+        new DeclarationAssertions(packageDescriptor, utils)
+            .assertLibraryPresence()
+            .assertClassPresence();
 
         store.commitTransaction();
     }

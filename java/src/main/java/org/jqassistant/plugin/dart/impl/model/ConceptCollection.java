@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.jqassistant.plugin.dart.impl.model.core.Class;
 import org.jqassistant.plugin.dart.impl.model.core.Library;
 
 import java.util.ArrayList;
@@ -16,5 +17,8 @@ public class ConceptCollection {
 
     @JsonAlias("library")
     private List<Library> libraries = new ArrayList<>();
+
+    @JsonAlias("class")
+    private List<Class> classes = new ArrayList<>();
 
 }

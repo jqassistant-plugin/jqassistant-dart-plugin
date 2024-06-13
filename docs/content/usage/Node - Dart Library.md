@@ -19,6 +19,6 @@ aliases:
 
 ## Relations
 
-| Name | Target Label(s) | Cardinality | Description |
-|------|-----------------|-------------|-------------|
-|      |                 |             |             |
+| Name       | Target Label(s)                    | Cardinality | Description                              |
+|------------|------------------------------------|-------------|------------------------------------------|
+| `DECLARES` | [[Node - Dart Class\|:Dart:Class]] | 0..*        | globally declared classes of the library |

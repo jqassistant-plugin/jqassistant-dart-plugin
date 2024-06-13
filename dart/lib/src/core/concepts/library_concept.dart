@@ -10,7 +10,7 @@ final class LCELibrary extends LCEConcept {
   LCELibrary(this.fqn, this.path);
 
   @override
-  Object toJSON() {
+  Map<String, Object> toJSON() {
     return {
       "fqn": fqn,
       "path": path,
