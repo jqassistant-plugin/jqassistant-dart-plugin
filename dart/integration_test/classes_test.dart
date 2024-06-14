@@ -21,7 +21,7 @@ void main() {
       final libraries = concepts["library"]!;
       expect(
           libraries,
-          contains(expectLibary("package:test-package/empty.dart",
+          contains(expectLibary("package:test_package/empty.dart",
               normPath(packagePath, "./lib/empty.dart"))));
     });
 
@@ -30,37 +30,37 @@ void main() {
       final libPath = normPath(packagePath, "./lib/empty.dart");
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:BasicClass",
+          contains(expectClass("package:test_package/empty.dart:BasicClass",
               libPath, "BasicClass")));
       expect(
           classes,
           contains(expectClass(
-              "package:test-package/empty.dart:BaseClass", libPath, "BaseClass",
+              "package:test_package/empty.dart:BaseClass", libPath, "BaseClass",
               baseModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:InterfaceClass",
+          contains(expectClass("package:test_package/empty.dart:InterfaceClass",
               libPath, "InterfaceClass",
               interfaceModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:FinalClass",
+          contains(expectClass("package:test_package/empty.dart:FinalClass",
               libPath, "FinalClass",
               finalModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:SealedClass",
+          contains(expectClass("package:test_package/empty.dart:SealedClass",
               libPath, "SealedClass",
               sealedModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:AbstractClass",
+          contains(expectClass("package:test_package/empty.dart:AbstractClass",
               libPath, "AbstractClass",
               abstractModifier: true)));
       expect(
           classes,
           contains(expectClass(
-              "package:test-package/empty.dart:AbstractInterfaceClass",
+              "package:test_package/empty.dart:AbstractInterfaceClass",
               libPath,
               "AbstractInterfaceClass",
               abstractModifier: true,
@@ -68,25 +68,25 @@ void main() {
       expect(
           classes,
           contains(expectClass(
-              "package:test-package/empty.dart:AbstractFinalClass",
+              "package:test_package/empty.dart:AbstractFinalClass",
               libPath,
               "AbstractFinalClass",
               abstractModifier: true,
               finalModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:MixinClass",
+          contains(expectClass("package:test_package/empty.dart:MixinClass",
               libPath, "MixinClass",
               mixinModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test-package/empty.dart:BaseMixinClass",
+          contains(expectClass("package:test_package/empty.dart:BaseMixinClass",
               libPath, "BaseMixinClass",
               baseModifier: true, mixinModifier: true)));
       expect(
           classes,
           contains(expectClass(
-              "package:test-package/empty.dart:AbstractMixinClass",
+              "package:test_package/empty.dart:AbstractMixinClass",
               libPath,
               "AbstractMixinClass",
               abstractModifier: true,
@@ -94,7 +94,7 @@ void main() {
       expect(
           classes,
           contains(expectClass(
-              "package:test-package/empty.dart:AbstractBaseMixinClass",
+              "package:test_package/empty.dart:AbstractBaseMixinClass",
               libPath,
               "AbstractBaseMixinClass",
               abstractModifier: true,

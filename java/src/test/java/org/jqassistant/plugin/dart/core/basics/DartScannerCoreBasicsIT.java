@@ -46,8 +46,8 @@ class DartScannerCoreBasicsIT extends AbstractPluginIT {
             .isEqualTo(utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package"));
         assertThat(packageDescriptor)
             .as("package has correct identifiers")
-            .hasFieldOrPropertyWithValue("name", "test-package")
-            .hasFieldOrPropertyWithValue("fqn", "package:test-package");
+            .hasFieldOrPropertyWithValue("name", "test_package")
+            .hasFieldOrPropertyWithValue("fqn", "package:test_package");
 
         assertThat(packageDescriptor.getConfigFile().getAbsoluteFileName())
             .as("package has correct config file")
@@ -55,8 +55,8 @@ class DartScannerCoreBasicsIT extends AbstractPluginIT {
 
         assertThat(packageDescriptor.getLibraries())
             .as("package has two expected empty libraries under lib/")
-            .anySatisfy(lib -> assertThat(lib.getFqn()).isEqualTo("package:test-package/a.dart"))
-            .anySatisfy(lib -> assertThat(lib.getFqn()).isEqualTo("package:test-package/b.dart"));
+            .anySatisfy(lib -> assertThat(lib.getFqn()).isEqualTo("package:test_package/a.dart"))
+            .anySatisfy(lib -> assertThat(lib.getFqn()).isEqualTo("package:test_package/b.dart"));
 
         new DeclarationAssertions(packageDescriptor, utils)
             .assertLibraryPresence()

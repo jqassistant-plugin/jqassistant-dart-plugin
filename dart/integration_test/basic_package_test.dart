@@ -19,7 +19,7 @@ void main() {
       expect(scanResult, hasLength(1));
 
       final package = scanResult[0];
-      expect(package.packageInfo.packageName, "test-package");
+      expect(package.packageInfo.packageName, "test_package");
     });
 
     test("libraries exist", () {
@@ -28,11 +28,11 @@ void main() {
       final libraries = package.concepts["library"]!;
       expect(
           libraries,
-          contains(expectLibary("package:test-package/a.dart",
+          contains(expectLibary("package:test_package/a.dart",
               normPath(packagePath, "./lib/a.dart"))));
       expect(
           libraries,
-          contains(expectLibary("package:test-package/b.dart",
+          contains(expectLibary("package:test_package/b.dart",
               normPath(packagePath, "./lib/b.dart"))));
     });
   });

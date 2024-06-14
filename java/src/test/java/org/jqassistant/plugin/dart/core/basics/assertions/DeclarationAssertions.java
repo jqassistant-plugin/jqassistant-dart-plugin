@@ -23,7 +23,7 @@ public class DeclarationAssertions {
     public DeclarationAssertions assertLibraryPresence() {
 
         Optional<LibraryDescriptor> classesLibDescriptorOptional = packageDescriptor.getLibraries().stream()
-            .filter(mod -> mod.getFqn().equals("package:test-package/classes.dart"))
+            .filter(mod -> mod.getFqn().equals("package:test_package/classes.dart"))
             .findFirst();
 
         assertThat(classesLibDescriptorOptional)
@@ -40,7 +40,7 @@ public class DeclarationAssertions {
             .as("classes library has two class declarations")
             .hasSize(2);
 
-        Optional<ClassDescriptor> emptyClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test-package/classes.dart:EmptyClass")).findFirst();
+        Optional<ClassDescriptor> emptyClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:EmptyClass")).findFirst();
         assertThat(emptyClassDescriptorOpt)
             .as("empty class is present")
             .isPresent();
@@ -56,7 +56,7 @@ public class DeclarationAssertions {
             .hasFieldOrPropertyWithValue("abstract", false)
             .hasFieldOrPropertyWithValue("mixin", false);
 
-        Optional<ClassDescriptor> abstractMixinClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test-package/classes.dart:EmptyAbstractMixinClass")).findFirst();
+        Optional<ClassDescriptor> abstractMixinClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:EmptyAbstractMixinClass")).findFirst();
         assertThat(abstractMixinClassDescriptorOpt)
             .as("empty class is present")
             .isPresent();

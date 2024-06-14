@@ -1,12 +1,12 @@
 [
   {
-    "name": "test-package",
-    "fqn": "package:test-package",
+    "name": "test_package",
+    "fqn": "package:test_package",
     "packagePath": "/java/src/test/resources/java-it-core-basics-sample-package",
     "concepts": {
       "class": [
         {
-          "fqn": "package:test-package/classes.dart:EmptyClass",
+          "fqn": "package:test_package/classes.dart:EmptyClass",
           "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
           "name": "EmptyClass",
           "base": false,
@@ -17,7 +17,7 @@
           "mixin": false
         },
         {
-          "fqn": "package:test-package/classes.dart:EmptyAbstractMixinClass",
+          "fqn": "package:test_package/classes.dart:EmptyAbstractMixinClass",
           "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
           "name": "EmptyAbstractMixinClass",
           "base": false,
@@ -30,15 +30,15 @@
       ],
       "library": [
         {
-          "fqn": "package:test-package/classes.dart",
+          "fqn": "package:test_package/classes.dart",
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart"
         },
         {
-          "fqn": "package:test-package/a.dart",
+          "fqn": "package:test_package/a.dart",
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/a.dart"
         },
         {
-          "fqn": "package:test-package/b.dart",
+          "fqn": "package:test_package/b.dart",
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/b.dart"
         }
       ]
