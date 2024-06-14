@@ -30,13 +30,14 @@ instructions and basic usage
 
 %%
 *TODO:*
+
+- functions
+- global variable declarations
 - mixins
   - modifiers: `base`
 - enums
 - extension methods
 - extension types
 - typedefs
-- functions
-- global variable declarations
   %%
 ## Development

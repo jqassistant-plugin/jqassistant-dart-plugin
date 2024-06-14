@@ -23,18 +23,18 @@ on:
         default: "X.Y.Z-SNAPSHOT"
 
 jobs:
-  maven-release:
-    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      releaseVersion: ${{ github.event.inputs.releaseVersion }}
-      developmentVersion: ${{ github.event.inputs.developmentVersion }}
-    secrets:
-      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
-      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
-      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
-      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
-      sonar_token: ${{ secrets.SONAR_TOKEN }}
+  #  maven-release:
+  #    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
+  #    with:
+  #      branch: ${{ github.event.inputs.branch }}
+  #      releaseVersion: ${{ github.event.inputs.releaseVersion }}
+  #      developmentVersion: ${{ github.event.inputs.developmentVersion }}
+  #    secrets:
+  #      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+  #      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+  #      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
+  #      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+  #      sonar_token: ${{ secrets.SONAR_TOKEN }}
   dart-build:
     runs-on: ${{ matrix.runs-on }}
     strategy:
@@ -63,7 +63,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
-    needs: [ dart-build, maven-release ]
+    needs: [ dart-build ]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
@@ -72,6 +72,15 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: ./artifacts
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.releaseVersion }}
+          release_name: Release ${{ github.event.inputs.releaseVersion }}
+          draft: false
+          prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
       - name: Upload Dart Binaries to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
