@@ -2,6 +2,7 @@
   "baseUrl": "jqassistant-plugin.github.io/jqassistant-dart-plugin",
   "pageTitle": "jQA Dart Plugin",
   "footerLinks": {
+    "Maven": "https://central.sonatype.com/artifact/org.jqassistant.plugin.dart/jqassistant-dart-plugin",
     "Source": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin",
     "Issues": "https://github.com/jqassistant-plugin/jqassistant-dart-plugin/issues",
     "Sonar": "https://sonarcloud.io/project/overview?id=org.jqassistant.plugin.dart%3Aparent"

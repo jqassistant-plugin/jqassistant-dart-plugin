@@ -23,18 +23,18 @@ on:
         default: "X.Y.Z-SNAPSHOT"
 
 jobs:
-  #  maven-release:
-  #    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
-  #    with:
-  #      branch: ${{ github.event.inputs.branch }}
-  #      releaseVersion: ${{ github.event.inputs.releaseVersion }}
-  #      developmentVersion: ${{ github.event.inputs.developmentVersion }}
-  #    secrets:
-  #      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
-  #      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
-  #      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
-  #      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
-  #      sonar_token: ${{ secrets.SONAR_TOKEN }}
+  maven-release:
+    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
+    with:
+      branch: ${{ github.event.inputs.branch }}
+      releaseVersion: ${{ github.event.inputs.releaseVersion }}
+      developmentVersion: ${{ github.event.inputs.developmentVersion }}
+    secrets:
+      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
+      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
   dart-build:
     runs-on: ${{ matrix.runs-on }}
     strategy:
@@ -50,7 +50,7 @@ jobs:
           - runs-on: windows-latest
             binary-name: jqa_dart_lce_windows_amd64.exe
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
         working-directory: ./dart
@@ -63,28 +63,29 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
-    needs: [ dart-build ]
+    needs: [ dart-build, maven-release ]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - uses: actions/checkout@v2
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v2
         with:
           path: ./artifacts
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
+          name: Release ${{ github.event.inputs.releaseVersion }}
           tag_name: ${{ github.event.inputs.releaseVersion }}
-          release_name: Release ${{ github.event.inputs.releaseVersion }}
           draft: false
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
-      - name: Upload Dart Binaries to Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          for file in ./artifacts/*/*; do
-            gh release upload ${{ github.event.inputs.releaseVersion }} "$file" --clobber
-          done
+          files: ./artifacts/*/*
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
+      - name: Verify Package
+        run: dart pub publish --dry-run
+        working-directory: ./dart
+      - name: Publish Package on pub.dev
+        run: dart pub publish --force
+        working-directory: ./dart
