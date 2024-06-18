@@ -35,5 +35,14 @@ jobs:
         working-directory: ./dart
       - run: dart analyze
         working-directory: ./dart
+      - name: Run dart pub get on sample directories
+        run: |
+          for dir in ./dart/integration_test/samples/*/; do
+            echo "Running dart pub get in $dir"
+            cd $dir
+            dart pub get
+            cd -
+          done
+        shell: bash
       - run: dart test integration_test
         working-directory: ./dart
