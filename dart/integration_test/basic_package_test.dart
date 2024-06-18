@@ -11,8 +11,7 @@ void main() {
     late List<LCEPackage> scanResult;
 
     setUpAll(() async {
-      scanResult =
-          await processPackages("integration_test/samples/basic-package");
+      scanResult = await processPackages(packagePath);
     });
 
     test("package exists", () {
@@ -28,11 +27,11 @@ void main() {
       final libraries = package.concepts["library"]!;
       expect(
           libraries,
-          contains(expectLibary("package:test_package/a.dart",
+          contains(matchesLibrary("package:test_package/a.dart",
               normPath(packagePath, "./lib/a.dart"))));
       expect(
           libraries,
-          contains(expectLibary("package:test_package/b.dart",
+          contains(matchesLibrary("package:test_package/b.dart",
               normPath(packagePath, "./lib/b.dart"))));
     });
   });

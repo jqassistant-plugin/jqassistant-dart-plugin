@@ -4,11 +4,13 @@
                     name="jQAssistant Dart Plugin" id="jqassistant.plugin.dart">
     <description>Provides a scanner for Dart.</description>
     <model>
+        <class>org.jqassistant.plugin.dart.api.model.core.ClassDescriptor</class>
+        <class>org.jqassistant.plugin.dart.api.model.core.FunctionDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.DartDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.DartScanDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.PackageDescriptor</class>
-        <class>org.jqassistant.plugin.dart.api.model.core.ClassDescriptor</class>
+        <class>org.jqassistant.plugin.dart.api.model.core.ParameterDescriptor</class>
 
         <class>org.jqassistant.plugin.dart.api.model.core.LocalFileDescriptor</class>
     </model>

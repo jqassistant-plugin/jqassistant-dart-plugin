@@ -34,12 +34,36 @@
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart"
         },
         {
+          "fqn": "package:test_package/functions.dart",
+          "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/functions.dart"
+        },
+        {
           "fqn": "package:test_package/a.dart",
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/a.dart"
         },
         {
           "fqn": "package:test_package/b.dart",
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/b.dart"
+        }
+      ],
+      "function": [
+        {
+          "fqn": "package:test_package/functions.dart:myFunction",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/functions.dart",
+          "name": "myFunction",
+          "returnType": "String",
+          "parameters": [
+            {
+              "name": "a",
+              "index": 0,
+              "type": "int"
+            },
+            {
+              "name": "b",
+              "index": 1,
+              "type": "String"
+            }
+          ]
         }
       ]
     }

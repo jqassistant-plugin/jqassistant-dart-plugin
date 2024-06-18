@@ -3,4 +3,10 @@
  *
  * As the analyzer API doesn't provide a straightforward way to identify AstNode types, this enum was created as a helper.
  */
-enum AstNodeType { compilationUnit, classDeclaration }
+enum AstNodeType {
+  classDeclaration,
+  compilationUnit,
+  formalParameterList,
+  functionDeclaration,
+  functionExpression,
+}

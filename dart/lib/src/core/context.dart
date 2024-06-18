@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:jqassistant_dart_lce/src/core/concept.dart';
 import 'package:jqassistant_dart_lce/src/core/package.dart';
@@ -18,8 +19,10 @@ final class ProcessingContext {
 final class GlobalContext {
   LCEPackageInfo packageInfo;
   String sourceFilePathAbsolute;
+  AnalysisSession analysisSession;
 
-  GlobalContext(this.packageInfo, this.sourceFilePathAbsolute);
+  GlobalContext(
+      this.packageInfo, this.sourceFilePathAbsolute, this.analysisSession);
 }
 
 /**

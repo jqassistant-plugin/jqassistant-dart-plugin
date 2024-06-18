@@ -5,6 +5,7 @@ import com.buschmais.jqassistant.plugin.common.api.model.FileDescriptor;
 import com.buschmais.jqassistant.plugin.common.api.scanner.FileResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.jqassistant.plugin.dart.api.model.core.ClassDescriptor;
+import org.jqassistant.plugin.dart.api.model.core.FunctionDescriptor;
 import org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor;
 import org.jqassistant.plugin.dart.impl.model.ConceptCollection;
 import org.jqassistant.plugin.dart.impl.model.core.Library;
@@ -30,6 +31,13 @@ public class LibraryMapper {
                 return o;
             }));
 
+        Map<String, List<FunctionDescriptor>> functions = new HashMap<>();
+        FunctionMapper.INSTANCE.mapList(conceptCollection.getFunctions(), scanner)
+            .forEach(functionDescriptor -> functions.merge(functionDescriptor.getLibraryPath(), new ArrayList<>(List.of(functionDescriptor)), (o, n) -> {
+                o.addAll(n);
+                return o;
+            }));
+
         for (Library library : conceptCollection.getLibraries()) {
             FileDescriptor fileDescriptor = fileResolver.require(library.getPath(), FileDescriptor.class, scanner.getContext());
             if (fileDescriptor != null) { // only represent libraries in the graph that were previously scanned in the file system
@@ -37,6 +45,7 @@ public class LibraryMapper {
                 libraryDescriptor.setFqn(library.getFqn());
 
                 libraryDescriptor.getClasses().addAll(classes.getOrDefault(library.getPath(), new ArrayList<>()));
+                libraryDescriptor.getFunctions().addAll(functions.getOrDefault(library.getPath(), new ArrayList<>()));
 
                 result.add(libraryDescriptor);
             }

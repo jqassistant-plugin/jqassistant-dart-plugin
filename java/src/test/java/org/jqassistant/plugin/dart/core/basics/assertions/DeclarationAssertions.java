@@ -2,6 +2,7 @@ package org.jqassistant.plugin.dart.core.basics.assertions;
 
 import org.jqassistant.plugin.dart.TestUtils;
 import org.jqassistant.plugin.dart.api.model.core.ClassDescriptor;
+import org.jqassistant.plugin.dart.api.model.core.FunctionDescriptor;
 import org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor;
 import org.jqassistant.plugin.dart.api.model.core.PackageDescriptor;
 
@@ -14,6 +15,7 @@ public class DeclarationAssertions {
     TestUtils utils;
     PackageDescriptor packageDescriptor;
     LibraryDescriptor classesLibDescriptor;
+    LibraryDescriptor functionsLibDescriptor;
 
     public DeclarationAssertions(PackageDescriptor packageDescriptor, TestUtils utils) {
         this.packageDescriptor = packageDescriptor;
@@ -21,18 +23,19 @@ public class DeclarationAssertions {
     }
 
     public DeclarationAssertions assertLibraryPresence() {
-
-        Optional<LibraryDescriptor> classesLibDescriptorOptional = packageDescriptor.getLibraries().stream()
-            .filter(mod -> mod.getFqn().equals("package:test_package/classes.dart"))
-            .findFirst();
-
-        assertThat(classesLibDescriptorOptional)
-            .as("classes library is present")
-            .isPresent();
-
-        classesLibDescriptorOptional.ifPresent(moduleDescriptor -> this.classesLibDescriptor = moduleDescriptor);
-
+        classesLibDescriptor = checkForLibrary("classes");
+        functionsLibDescriptor = checkForLibrary("functions");
         return this;
+    }
+
+    private LibraryDescriptor checkForLibrary(String name) {
+        Optional<LibraryDescriptor> classesLibDescriptorOptional = packageDescriptor.getLibraries().stream()
+            .filter(mod -> mod.getFqn().equals("package:test_package/" + name + ".dart"))
+            .findFirst();
+        assertThat(classesLibDescriptorOptional)
+            .as(name + " library is present")
+            .isPresent();
+        return classesLibDescriptorOptional.get();
     }
 
     public DeclarationAssertions assertClassPresence() {
@@ -46,7 +49,7 @@ public class DeclarationAssertions {
             .isPresent();
         ClassDescriptor emptyClassDescriptor = emptyClassDescriptorOpt.get();
         assertThat(emptyClassDescriptor)
-            .as("Empty class has all properties set correctly")
+            .as("empty class has all properties set correctly")
             .hasFieldOrPropertyWithValue("name", "EmptyClass")
             .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart"))
             .hasFieldOrPropertyWithValue("base", false)
@@ -58,11 +61,11 @@ public class DeclarationAssertions {
 
         Optional<ClassDescriptor> abstractMixinClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:EmptyAbstractMixinClass")).findFirst();
         assertThat(abstractMixinClassDescriptorOpt)
-            .as("empty class is present")
+            .as("empty abstract mixin class is present")
             .isPresent();
         ClassDescriptor abstractMixinClassDescriptor = abstractMixinClassDescriptorOpt.get();
         assertThat(abstractMixinClassDescriptor)
-            .as("Empty class has all properties set correctly")
+            .as("empty abstract mixin class has all properties set correctly")
             .hasFieldOrPropertyWithValue("name", "EmptyAbstractMixinClass")
             .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart"))
             .hasFieldOrPropertyWithValue("base", false)
@@ -71,6 +74,38 @@ public class DeclarationAssertions {
             .hasFieldOrPropertyWithValue("sealed", false)
             .hasFieldOrPropertyWithValue("abstract", true)
             .hasFieldOrPropertyWithValue("mixin", true);
+
+        return this;
+    }
+
+    public DeclarationAssertions assertFunctionPresence() {
+        assertThat(functionsLibDescriptor.getFunctions())
+            .as("functions library has one function")
+            .hasSize(1);
+
+        Optional<FunctionDescriptor> functionDescriptorOpt = functionsLibDescriptor.getFunctions().stream().filter(c -> c.getFqn().equals("package:test_package/functions.dart:myFunction")).findFirst();
+        assertThat(functionDescriptorOpt)
+            .as("function is present")
+            .isPresent();
+        FunctionDescriptor functionDescriptor = functionDescriptorOpt.get();
+        assertThat(functionDescriptor)
+            .as("function has all properties set correctly")
+            .hasFieldOrPropertyWithValue("name", "myFunction")
+            .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/functions.dart"))
+            .hasFieldOrPropertyWithValue("returnType", "String");
+        assertThat(functionDescriptor.getParameters())
+            .as("function has parameters set correctly")
+            .hasSize(2)
+            .anySatisfy(p -> {
+                assertThat(p.getName()).isEqualTo("a");
+                assertThat(p.getIndex()).isZero();
+                assertThat(p.getType()).isEqualTo("int");
+            })
+            .anySatisfy(p -> {
+                assertThat(p.getName()).isEqualTo("b");
+                assertThat(p.getIndex()).isEqualTo(1);
+                assertThat(p.getType()).isEqualTo("String");
+            });
 
         return this;
     }

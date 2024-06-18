@@ -68,3 +68,12 @@ ConceptMap singleEntryConceptMap(LCEConcept concept) {
     concept.conceptId: [concept]
   };
 }
+
+/**
+ * Takes a [ConceptMap] with containing already processed child concepts, removes all concepts of the given concept ID and returns them.
+ */
+List<T> extractAndDeleteChildConcepts<T extends LCEConcept>(
+    ConceptMap childConcepts, String conceptId) {
+  return childConcepts.remove(conceptId)?.map((elem) => elem as T).toList() ??
+      [];
+}

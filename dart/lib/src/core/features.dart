@@ -1,6 +1,7 @@
 import 'package:jqassistant_dart_lce/src/core/post_processor.dart';
 import 'package:jqassistant_dart_lce/src/core/processor.dart';
 import 'package:jqassistant_dart_lce/src/core/processors/class_processor.dart';
+import 'package:jqassistant_dart_lce/src/core/processors/function_processor.dart';
 import 'package:jqassistant_dart_lce/src/core/processors/library_processor.dart';
 import 'package:jqassistant_dart_lce/src/core/utils/ast_utils.dart';
 
@@ -10,6 +11,8 @@ import 'package:jqassistant_dart_lce/src/core/utils/ast_utils.dart';
 final Map<AstNodeType, List<Processor>> _processors = {
   AstNodeType.compilationUnit: [LibraryProcessor()],
   AstNodeType.classDeclaration: [ClassProcessor()],
+  AstNodeType.functionDeclaration: [FunctionDeclarationProcessor()],
+  AstNodeType.functionExpression: [FunctionExpressionProcessor()],
 };
 
 /**

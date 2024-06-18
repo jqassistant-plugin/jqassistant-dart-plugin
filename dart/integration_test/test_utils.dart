@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:jqassistant_dart_lce/src/core/concepts/class_concept.dart';
+import 'package:jqassistant_dart_lce/src/core/concepts/function_concept.dart';
 import 'package:jqassistant_dart_lce/src/core/concepts/library_concept.dart';
+import 'package:jqassistant_dart_lce/src/core/concepts/parameter_concept.dart';
 import 'package:path/path.dart';
 import 'package:test/expect.dart';
 
@@ -15,11 +17,11 @@ String normPath(String packagePath, String path) {
       .replaceAll("\\", "/");
 }
 
-Matcher expectLibary(String fqn, String path) => predicate((LCELibrary v) {
+Matcher matchesLibrary(String fqn, String path) => predicate((LCELibrary v) {
       return v.fqn == fqn && v.path == path;
     }, "LCELibrary with fqn: ${fqn} and path: ${path}");
 
-Matcher expectClass(String fqn, String libraryPath, String name,
+Matcher matchesClass(String fqn, String libraryPath, String name,
         {bool baseModifier = false,
         bool interfaceModifier = false,
         bool finalModifier = false,
@@ -39,3 +41,19 @@ Matcher expectClass(String fqn, String libraryPath, String name,
         LCEClass(fqn, libraryPath, name, baseModifier, interfaceModifier,
                 finalModifier, sealedModifier, abstractModifier, mixinModifier)
             .toString());
+
+Matcher matchesFunction(
+        String fqn, String libraryPath, String name, String returnType) =>
+    predicate((LCEFunction f) {
+      return f.fqn == fqn &&
+          f.libraryPath == libraryPath &&
+          f.name == name &&
+          f.returnType == returnType;
+    }, LCEFunction(fqn, libraryPath, name, returnType).toString());
+
+Matcher hasParameter(String name, int index, String type) =>
+    predicate((LCEFunction f) {
+      return f.parameters.any((p) {
+        return p.name == name && p.index == index && p.type == type;
+      });
+    }, LCEParameter(name, index, type).toString());

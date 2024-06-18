@@ -11,8 +11,7 @@ void main() {
     late ConceptMap concepts;
 
     setUpAll(() async {
-      final scanResult =
-          await processPackages("integration_test/samples/classes");
+      final scanResult = await processPackages(packagePath);
       concepts = scanResult[0].concepts;
     });
 
@@ -21,7 +20,7 @@ void main() {
       final libraries = concepts["library"]!;
       expect(
           libraries,
-          contains(expectLibary("package:test_package/empty.dart",
+          contains(matchesLibrary("package:test_package/empty.dart",
               normPath(packagePath, "./lib/empty.dart"))));
     });
 
@@ -30,36 +29,37 @@ void main() {
       final libPath = normPath(packagePath, "./lib/empty.dart");
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:BasicClass",
+          contains(matchesClass("package:test_package/empty.dart:BasicClass",
               libPath, "BasicClass")));
       expect(
           classes,
-          contains(expectClass(
+          contains(matchesClass(
               "package:test_package/empty.dart:BaseClass", libPath, "BaseClass",
               baseModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:InterfaceClass",
+          contains(matchesClass(
+              "package:test_package/empty.dart:InterfaceClass",
               libPath, "InterfaceClass",
               interfaceModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:FinalClass",
+          contains(matchesClass("package:test_package/empty.dart:FinalClass",
               libPath, "FinalClass",
               finalModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:SealedClass",
+          contains(matchesClass("package:test_package/empty.dart:SealedClass",
               libPath, "SealedClass",
               sealedModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:AbstractClass",
+          contains(matchesClass("package:test_package/empty.dart:AbstractClass",
               libPath, "AbstractClass",
               abstractModifier: true)));
       expect(
           classes,
-          contains(expectClass(
+          contains(matchesClass(
               "package:test_package/empty.dart:AbstractInterfaceClass",
               libPath,
               "AbstractInterfaceClass",
@@ -67,7 +67,7 @@ void main() {
               interfaceModifier: true)));
       expect(
           classes,
-          contains(expectClass(
+          contains(matchesClass(
               "package:test_package/empty.dart:AbstractFinalClass",
               libPath,
               "AbstractFinalClass",
@@ -75,17 +75,18 @@ void main() {
               finalModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:MixinClass",
+          contains(matchesClass("package:test_package/empty.dart:MixinClass",
               libPath, "MixinClass",
               mixinModifier: true)));
       expect(
           classes,
-          contains(expectClass("package:test_package/empty.dart:BaseMixinClass",
+          contains(matchesClass(
+              "package:test_package/empty.dart:BaseMixinClass",
               libPath, "BaseMixinClass",
               baseModifier: true, mixinModifier: true)));
       expect(
           classes,
-          contains(expectClass(
+          contains(matchesClass(
               "package:test_package/empty.dart:AbstractMixinClass",
               libPath,
               "AbstractMixinClass",
@@ -93,7 +94,7 @@ void main() {
               mixinModifier: true)));
       expect(
           classes,
-          contains(expectClass(
+          contains(matchesClass(
               "package:test_package/empty.dart:AbstractBaseMixinClass",
               libPath,
               "AbstractBaseMixinClass",

@@ -2,11 +2,9 @@
 aliases:
   - :Dart:Scan
 ---
-
 # `:DartScan` Node
 
 -> represents the results for scanning a directory for Dart packages
-
 - is realized as additional labels on a `:File:Json` node
 
 ## Relations

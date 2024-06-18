@@ -89,12 +89,29 @@ final class Traverser extends UnifyingAstVisitor<ConceptMap> {
   }
 
   @override
+  ConceptMap? visitClassDeclaration(ClassDeclaration node) {
+    return traverse(AstNodeType.classDeclaration, node);
+  }
+
+  @override
   ConceptMap? visitCompilationUnit(CompilationUnit node) {
     return traverse(AstNodeType.compilationUnit, node, traverseChildren: true);
   }
 
   @override
-  ConceptMap? visitClassDeclaration(ClassDeclaration node) {
-    return traverse(AstNodeType.classDeclaration, node);
+  ConceptMap? visitFunctionDeclaration(FunctionDeclaration node) {
+    return traverse(AstNodeType.functionDeclaration, node,
+        traverseChildren: true);
+  }
+
+  @override
+  ConceptMap? visitFunctionExpression(FunctionExpression node) {
+    return traverse(AstNodeType.functionExpression, node,
+        traverseChildren: true);
+  }
+
+  @override
+  ConceptMap? visitFormalParameterList(FormalParameterList node) {
+    return traverse(AstNodeType.formalParameterList, node);
   }
 }

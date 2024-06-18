@@ -2,7 +2,6 @@
 aliases:
   - :Dart:Package
 ---
-
 # `:Dart:Package` Node
 
 -> represents a [Dart Package](https://dart.dev/tools/pub/glossary#package)

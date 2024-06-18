@@ -2,7 +2,6 @@
 aliases:
   - :Dart:Class
 ---
-
 # `:Dart:Class` Node
 
 -> represents a globally declared Dart class
@@ -20,13 +19,10 @@ aliases:
 | `sealed` (boolean)    | indicates, if the class has a `sealed` modifier                              |
 | `abstract` (boolean)  | indicates, if the class has a `abstract` modifier                            |
 | `mixin` (boolean)     | indicates, if the class has a `mixin` modifier                               |
-
 %%
-
 ## Relations
 
 | Name | Target Label(s) | Cardinality | Description |
 |------|-----------------|-------------|-------------|
 |      |                 |             |             |
-
 %%

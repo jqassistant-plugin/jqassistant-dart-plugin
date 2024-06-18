@@ -1,8 +1,10 @@
-import '../concept.dart';
+import 'package:jqassistant_dart_lce/src/core/concept.dart';
 
 final class LCEClass extends LCEConcept {
+  static const CONCEPT_ID = "class";
+
   @override
-  String get conceptId => "class";
+  String get conceptId => CONCEPT_ID;
 
   String fqn;
   String libraryPath;

@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:analyzer/dart/analysis/features.dart';
-import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/analysis/analysis_context.dart';
+import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
+import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:jqassistant_dart_lce/src/core/concept.dart';
 import 'package:jqassistant_dart_lce/src/core/context.dart';
@@ -45,15 +47,22 @@ Future<List<LCEPackage>> processPackages(String scanRoot) async {
 
     // Processing
     final libraryPaths = await determineLibraryPaths(packagePath);
+    AnalysisContextCollection analysisContextCollection =
+        AnalysisContextCollection(includedPaths: [packagePath]);
+    AnalysisContext context = analysisContextCollection.contextFor(packagePath);
+    AnalysisSession session = context.currentSession;
     for (final libraryPath in libraryPaths) {
       print("Scanning " + libraryPath);
-      CompilationUnit unit = parseFile(
-              path: libraryPath, featureSet: FeatureSet.latestLanguageVersion())
-          .unit;
-      ConceptMap? extractedConcepts = unit.accept(Traverser(
-          GlobalContext(packageInfo, libraryPath.replaceAll("\\", "/"))));
-      if (extractedConcepts != null) {
-        mergeConceptMaps([concepts, extractedConcepts]);
+      final result = await session.getResolvedUnit(libraryPath);
+      if (result is ResolvedUnitResult) {
+        CompilationUnit unit = result.unit;
+        ConceptMap? extractedConcepts = unit.accept(Traverser(GlobalContext(
+            packageInfo, libraryPath.replaceAll("\\", "/"), session)));
+        if (extractedConcepts != null) {
+          mergeConceptMaps([concepts, extractedConcepts]);
+        }
+      } else {
+        print("Error: Could not resolve AST for : ${libraryPath}");
       }
     }
 

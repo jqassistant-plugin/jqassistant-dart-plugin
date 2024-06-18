@@ -20,7 +20,7 @@ target
 /.mvn
 
 # Dart
-/dart/.dart_tool/
+**/.dart_tool/
 
 # Docs
 docs/content/.obsidian/workspace.json
