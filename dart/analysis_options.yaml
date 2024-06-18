@@ -1,0 +1,3 @@
+analyzer:
+  exclude:
+    - integration_test/samples/**
