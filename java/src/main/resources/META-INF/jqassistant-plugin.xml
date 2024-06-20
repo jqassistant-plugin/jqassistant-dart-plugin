@@ -11,6 +11,7 @@
         <class>org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.PackageDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.ParameterDescriptor</class>
+        <class>org.jqassistant.plugin.dart.api.model.core.VariableDescriptor</class>
 
         <class>org.jqassistant.plugin.dart.api.model.core.LocalFileDescriptor</class>
     </model>

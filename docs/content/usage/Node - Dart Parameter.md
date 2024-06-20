@@ -4,7 +4,7 @@ aliases:
 ---
 # `:Dart:Parameter` Node
 
--> represents an function parameter
+-> represents a function parameter
 
 ## Properties
 

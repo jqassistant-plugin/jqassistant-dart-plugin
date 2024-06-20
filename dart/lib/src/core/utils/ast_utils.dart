@@ -9,4 +9,5 @@ enum AstNodeType {
   formalParameterList,
   functionDeclaration,
   functionExpression,
+  topLevelVariableDeclaration,
 }

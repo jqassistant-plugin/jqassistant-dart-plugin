@@ -114,4 +114,10 @@ final class Traverser extends UnifyingAstVisitor<ConceptMap> {
   ConceptMap? visitFormalParameterList(FormalParameterList node) {
     return traverse(AstNodeType.formalParameterList, node);
   }
+
+  @override
+  ConceptMap? visitTopLevelVariableDeclaration(
+      TopLevelVariableDeclaration node) {
+    return traverse(AstNodeType.topLevelVariableDeclaration, node);
+  }
 }

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jqassistant.plugin.dart.api.model.core.ClassDescriptor;
 import org.jqassistant.plugin.dart.api.model.core.FunctionDescriptor;
 import org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor;
+import org.jqassistant.plugin.dart.api.model.core.VariableDescriptor;
 import org.jqassistant.plugin.dart.impl.model.ConceptCollection;
 import org.jqassistant.plugin.dart.impl.model.core.Library;
 
@@ -38,6 +39,13 @@ public class LibraryMapper {
                 return o;
             }));
 
+        Map<String, List<VariableDescriptor>> variables = new HashMap<>();
+        VariableMapper.INSTANCE.mapList(conceptCollection.getVariables(), scanner)
+            .forEach(variableDescriptor -> variables.merge(variableDescriptor.getLibraryPath(), new ArrayList<>(List.of(variableDescriptor)), (o, n) -> {
+                o.addAll(n);
+                return o;
+            }));
+
         for (Library library : conceptCollection.getLibraries()) {
             FileDescriptor fileDescriptor = fileResolver.require(library.getPath(), FileDescriptor.class, scanner.getContext());
             if (fileDescriptor != null) { // only represent libraries in the graph that were previously scanned in the file system
@@ -46,6 +54,7 @@ public class LibraryMapper {
 
                 libraryDescriptor.getClasses().addAll(classes.getOrDefault(library.getPath(), new ArrayList<>()));
                 libraryDescriptor.getFunctions().addAll(functions.getOrDefault(library.getPath(), new ArrayList<>()));
+                libraryDescriptor.getVariables().addAll(variables.getOrDefault(library.getPath(), new ArrayList<>()));
 
                 result.add(libraryDescriptor);
             }

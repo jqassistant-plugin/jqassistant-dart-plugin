@@ -14,4 +14,7 @@ public interface LibraryDescriptor extends DartDescriptor, FqnDescriptor {
     @Relation("DECLARES")
     List<FunctionDescriptor> getFunctions();
 
+    @Relation("DECLARES")
+    List<VariableDescriptor> getVariables();
+
 }

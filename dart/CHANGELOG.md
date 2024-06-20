@@ -1,6 +1,7 @@
 # 0.2.0
 
 * added detection of globally declared functions and their parameters
+* added detection of globally declared variables/constants
 
 # 0.1.0
 

@@ -21,13 +21,13 @@ This is the [Dart](https://dart.dev) Plugin for [jQAssistant](https://jqassistan
 - [[Node - Dart Library|:Dart:Library]]
   - [[Node - Dart Class|:Dart:Class]]
   - [[Node - Dart Function|:Dart:Function]]
+  - [[Node - Dart Variable|:Dart:Variable]]
 
 **Ancillary Node Types:**
 - [[Node - Dart Parameter|:Dart:Parameter]]
 
 %%
 *TODO:*
-- global variable declarations
 - mixins
   - modifiers: `base`
 - enums

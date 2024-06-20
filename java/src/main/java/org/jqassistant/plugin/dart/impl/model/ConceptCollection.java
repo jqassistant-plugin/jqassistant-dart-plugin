@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.jqassistant.plugin.dart.impl.model.core.Class;
 import org.jqassistant.plugin.dart.impl.model.core.Function;
 import org.jqassistant.plugin.dart.impl.model.core.Library;
+import org.jqassistant.plugin.dart.impl.model.core.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,5 +25,8 @@ public class ConceptCollection {
 
     @JsonAlias("function")
     private List<Function> functions = new ArrayList<>();
+
+    @JsonAlias("variable")
+    private List<Variable> variables = new ArrayList<>();
 
 }

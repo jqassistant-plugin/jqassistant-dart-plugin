@@ -1,10 +1,7 @@
 package org.jqassistant.plugin.dart.core.basics.assertions;
 
 import org.jqassistant.plugin.dart.TestUtils;
-import org.jqassistant.plugin.dart.api.model.core.ClassDescriptor;
-import org.jqassistant.plugin.dart.api.model.core.FunctionDescriptor;
-import org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor;
-import org.jqassistant.plugin.dart.api.model.core.PackageDescriptor;
+import org.jqassistant.plugin.dart.api.model.core.*;
 
 import java.util.Optional;
 
@@ -16,6 +13,7 @@ public class DeclarationAssertions {
     PackageDescriptor packageDescriptor;
     LibraryDescriptor classesLibDescriptor;
     LibraryDescriptor functionsLibDescriptor;
+    LibraryDescriptor variablesLibDescriptor;
 
     public DeclarationAssertions(PackageDescriptor packageDescriptor, TestUtils utils) {
         this.packageDescriptor = packageDescriptor;
@@ -25,6 +23,7 @@ public class DeclarationAssertions {
     public DeclarationAssertions assertLibraryPresence() {
         classesLibDescriptor = checkForLibrary("classes");
         functionsLibDescriptor = checkForLibrary("functions");
+        variablesLibDescriptor = checkForLibrary("variables");
         return this;
     }
 
@@ -106,6 +105,42 @@ public class DeclarationAssertions {
                 assertThat(p.getIndex()).isEqualTo(1);
                 assertThat(p.getType()).isEqualTo("String");
             });
+
+        return this;
+    }
+
+    public DeclarationAssertions assertVariablePresence() {
+        assertThat(variablesLibDescriptor.getVariables())
+            .as("variables library has two variables")
+            .hasSize(2);
+
+        Optional<VariableDescriptor> stringVarDescriptorOpt = variablesLibDescriptor.getVariables().stream().filter(c -> c.getFqn().equals("package:test_package/variables.dart:vString")).findFirst();
+        assertThat(stringVarDescriptorOpt)
+            .as("String variable is present")
+            .isPresent();
+        VariableDescriptor stringVarDescriptor = stringVarDescriptorOpt.get();
+        assertThat(stringVarDescriptor)
+            .as("function has all properties set correctly")
+            .hasFieldOrPropertyWithValue("name", "vString")
+            .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/variables.dart"))
+            .hasFieldOrPropertyWithValue("type", "String")
+            .hasFieldOrPropertyWithValue("late", false)
+            .hasFieldOrPropertyWithValue("final", false)
+            .hasFieldOrPropertyWithValue("const", false);
+
+        Optional<VariableDescriptor> lateFinalVarDescriptorOpt = variablesLibDescriptor.getVariables().stream().filter(c -> c.getFqn().equals("package:test_package/variables.dart:vLateFinal")).findFirst();
+        assertThat(lateFinalVarDescriptorOpt)
+            .as("String variable is present")
+            .isPresent();
+        VariableDescriptor lateFinalVarDescriptor = lateFinalVarDescriptorOpt.get();
+        assertThat(lateFinalVarDescriptor)
+            .as("function has all properties set correctly")
+            .hasFieldOrPropertyWithValue("name", "vLateFinal")
+            .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/variables.dart"))
+            .hasFieldOrPropertyWithValue("type", "int")
+            .hasFieldOrPropertyWithValue("late", true)
+            .hasFieldOrPropertyWithValue("final", true)
+            .hasFieldOrPropertyWithValue("const", false);
 
         return this;
     }
