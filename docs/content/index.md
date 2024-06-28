@@ -22,15 +22,14 @@ This is the [Dart](https://dart.dev) Plugin for [jQAssistant](https://jqassistan
   - [[Node - Dart Class|:Dart:Class]]
   - [[Node - Dart Function|:Dart:Function]]
   - [[Node - Dart Variable|:Dart:Variable]]
+  - [[Node - Dart Mixin|:Dart:Mixin]]
+  - [[Node - Dart Enum|:Dart:Enum]]
 
-**Ancillary Node Types:**
+**Auxiliary Node Types:**
 - [[Node - Dart Parameter|:Dart:Parameter]]
 
 %%
 *TODO:*
-- mixins
-  - modifiers: `base`
-- enums
 - extension methods
 - extension types
 - typedefs

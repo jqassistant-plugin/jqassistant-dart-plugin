@@ -38,8 +38,16 @@
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/functions.dart"
         },
         {
+          "fqn": "package:test_package/enums.dart",
+          "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/enums.dart"
+        },
+        {
           "fqn": "package:test_package/a.dart",
           "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/a.dart"
+        },
+        {
+          "fqn": "package:test_package/mixins.dart",
+          "path": "/java/src/test/resources/java-it-core-basics-sample-package/lib/mixins.dart"
         },
         {
           "fqn": "package:test_package/b.dart",
@@ -88,6 +96,21 @@
               "type": "String"
             }
           ]
+        }
+      ],
+      "enum": [
+        {
+          "fqn": "package:test_package/enums.dart:BasicEnum",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/enums.dart",
+          "name": "BasicEnum"
+        }
+      ],
+      "mixin": [
+        {
+          "fqn": "package:test_package/mixins.dart:BaseMixin",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/mixins.dart",
+          "name": "BaseMixin",
+          "base": true
         }
       ]
     }

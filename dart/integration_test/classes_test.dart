@@ -1,4 +1,5 @@
 import 'package:jqassistant_dart_lce/src/core/concept.dart';
+import 'package:jqassistant_dart_lce/src/core/concepts/class_concept.dart';
 import 'package:jqassistant_dart_lce/src/core/extractor.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
@@ -25,7 +26,7 @@ void main() {
     });
 
     test("empty classes", () {
-      List<LCEConcept> classes = concepts["class"]!;
+      List<LCEConcept> classes = concepts[LCEClass.CONCEPT_ID]!;
       final libPath = normPath(packagePath, "./lib/empty.dart");
       expect(
           classes,

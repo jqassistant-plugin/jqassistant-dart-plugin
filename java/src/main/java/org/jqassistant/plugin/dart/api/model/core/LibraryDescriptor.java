@@ -17,4 +17,10 @@ public interface LibraryDescriptor extends DartDescriptor, FqnDescriptor {
     @Relation("DECLARES")
     List<VariableDescriptor> getVariables();
 
+    @Relation("DECLARES")
+    List<MixinDescriptor> getMixins();
+
+    @Relation("DECLARES")
+    List<EnumDescriptor> getEnums();
+
 }

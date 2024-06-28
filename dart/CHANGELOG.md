@@ -2,6 +2,8 @@
 
 * added detection of globally declared functions and their parameters
 * added detection of globally declared variables/constants
+* added detection of globally declared mixins
+* added detection of globally declared enums
 
 # 0.1.0
 

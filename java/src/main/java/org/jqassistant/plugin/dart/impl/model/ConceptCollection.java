@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.jqassistant.plugin.dart.impl.model.core.Class;
-import org.jqassistant.plugin.dart.impl.model.core.Function;
-import org.jqassistant.plugin.dart.impl.model.core.Library;
-import org.jqassistant.plugin.dart.impl.model.core.Variable;
+import org.jqassistant.plugin.dart.impl.model.core.Enum;
+import org.jqassistant.plugin.dart.impl.model.core.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,5 +27,11 @@ public class ConceptCollection {
 
     @JsonAlias("variable")
     private List<Variable> variables = new ArrayList<>();
+
+    @JsonAlias("mixin")
+    private List<Mixin> mixins = new ArrayList<>();
+
+    @JsonAlias("enum")
+    private List<Enum> enums = new ArrayList<>();
 
 }

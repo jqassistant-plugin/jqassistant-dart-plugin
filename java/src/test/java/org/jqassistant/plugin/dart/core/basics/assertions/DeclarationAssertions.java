@@ -14,6 +14,8 @@ public class DeclarationAssertions {
     LibraryDescriptor classesLibDescriptor;
     LibraryDescriptor functionsLibDescriptor;
     LibraryDescriptor variablesLibDescriptor;
+    LibraryDescriptor mixinsLibDescriptor;
+    LibraryDescriptor enumsLibDescriptor;
 
     public DeclarationAssertions(PackageDescriptor packageDescriptor, TestUtils utils) {
         this.packageDescriptor = packageDescriptor;
@@ -24,6 +26,8 @@ public class DeclarationAssertions {
         classesLibDescriptor = checkForLibrary("classes");
         functionsLibDescriptor = checkForLibrary("functions");
         variablesLibDescriptor = checkForLibrary("variables");
+        mixinsLibDescriptor = checkForLibrary("mixins");
+        enumsLibDescriptor = checkForLibrary("enums");
         return this;
     }
 
@@ -141,6 +145,43 @@ public class DeclarationAssertions {
             .hasFieldOrPropertyWithValue("late", true)
             .hasFieldOrPropertyWithValue("final", true)
             .hasFieldOrPropertyWithValue("const", false);
+
+        return this;
+    }
+
+    public DeclarationAssertions assertMixinPresence() {
+        assertThat(mixinsLibDescriptor.getMixins())
+            .as("mixins library has one mixin declaration")
+            .hasSize(1);
+
+        Optional<MixinDescriptor> baseMixinOpt = mixinsLibDescriptor.getMixins().stream().filter(m -> m.getFqn().equals("package:test_package/mixins.dart:BaseMixin")).findFirst();
+        assertThat(baseMixinOpt)
+            .as("empty base mixin is present")
+            .isPresent();
+        MixinDescriptor baseMixinDescriptor = baseMixinOpt.get();
+        assertThat(baseMixinDescriptor)
+            .as("empty base mixin has all properties set correctly")
+            .hasFieldOrPropertyWithValue("name", "BaseMixin")
+            .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/mixins.dart"))
+            .hasFieldOrPropertyWithValue("base", true);
+
+        return this;
+    }
+
+    public DeclarationAssertions assertEnumPresence() {
+        assertThat(enumsLibDescriptor.getEnums())
+            .as("enums library has one enum declaration")
+            .hasSize(1);
+
+        Optional<EnumDescriptor> enumOpt = enumsLibDescriptor.getEnums().stream().filter(e -> e.getFqn().equals("package:test_package/enums.dart:BasicEnum")).findFirst();
+        assertThat(enumOpt)
+            .as("basic enum is present")
+            .isPresent();
+        EnumDescriptor enumDescriptor = enumOpt.get();
+        assertThat(enumDescriptor)
+            .as("basic enum has all properties set correctly")
+            .hasFieldOrPropertyWithValue("name", "BasicEnum")
+            .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/enums.dart"));
 
         return this;
     }

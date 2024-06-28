@@ -8,7 +8,9 @@
         <class>org.jqassistant.plugin.dart.api.model.core.FunctionDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.DartDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.DartScanDescriptor</class>
+        <class>org.jqassistant.plugin.dart.api.model.core.EnumDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.LibraryDescriptor</class>
+        <class>org.jqassistant.plugin.dart.api.model.core.MixinDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.PackageDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.ParameterDescriptor</class>
         <class>org.jqassistant.plugin.dart.api.model.core.VariableDescriptor</class>

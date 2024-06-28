@@ -6,8 +6,10 @@
 enum AstNodeType {
   classDeclaration,
   compilationUnit,
+  enumDeclaration,
   formalParameterList,
   functionDeclaration,
   functionExpression,
+  mixinDeclaration,
   topLevelVariableDeclaration,
 }

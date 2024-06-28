@@ -62,7 +62,9 @@ class DartScannerCoreBasicsIT extends AbstractPluginIT {
             .assertLibraryPresence()
             .assertClassPresence()
             .assertFunctionPresence()
-            .assertVariablePresence();
+            .assertVariablePresence()
+            .assertMixinPresence()
+            .assertEnumPresence();
 
         store.commitTransaction();
     }

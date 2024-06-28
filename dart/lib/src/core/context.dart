@@ -57,7 +57,7 @@ final class LocalContexts {
     for (var i = contexts.length - 1; i >= 0; i--) {
       final context = contexts[i][name];
       if (context != null) {
-        return (context, i - contexts.length);
+        return (context, contexts.length - i - 1);
       }
     }
     return null;

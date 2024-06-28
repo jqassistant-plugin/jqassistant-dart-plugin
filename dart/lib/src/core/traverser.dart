@@ -120,4 +120,14 @@ final class Traverser extends UnifyingAstVisitor<ConceptMap> {
       TopLevelVariableDeclaration node) {
     return traverse(AstNodeType.topLevelVariableDeclaration, node);
   }
+
+  @override
+  ConceptMap? visitMixinDeclaration(MixinDeclaration node) {
+    return traverse(AstNodeType.mixinDeclaration, node);
+  }
+
+  @override
+  ConceptMap? visitEnumDeclaration(EnumDeclaration node) {
+    return traverse(AstNodeType.enumDeclaration, node);
+  }
 }

@@ -22,3 +22,5 @@ aliases:
 | `DECLARES` | [[Node - Dart Class\|:Dart:Class]]       | 0..*        | globally declared classes of the library             |
 | `DECLARES` | [[Node - Dart Function\|:Dart:Function]] | 0..*        | globally declared functions of the library           |
 | `DECLARES` | [[Node - Dart Variable\|:Dart:Variable]] | 0..*        | globally declared variables/constants of the library |
+| `DECLARES` | [[Node - Dart Mixin\|:Dart:Mixin]]       | 0..*        | globally declared mixins of the library              |
+| `DECLARES` | [[Node - Dart Enum\|:Dart:Enum]]         | 0..*        | globally declared enums of the library               |
