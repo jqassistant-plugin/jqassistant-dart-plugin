@@ -28,10 +28,5 @@ This is the [Dart](https://dart.dev) Plugin for [jQAssistant](https://jqassistan
 **Auxiliary Node Types:**
 - [[Node - Dart Parameter|:Dart:Parameter]]
 
-%%
-*TODO:*
-- extension methods
-- extension types
-- typedefs
-  %%
 ## Development
+This plugin is based on the [LCE Architecture](https://jqassistant-plugin.github.io/jqassistant-lce-docs/).
