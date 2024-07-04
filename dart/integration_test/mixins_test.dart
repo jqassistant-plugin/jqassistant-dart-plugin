@@ -38,5 +38,49 @@ void main() {
               "package:test_package/empty.dart:BaseMixin", libPath, "BaseMixin",
               baseModifier: true)));
     });
+
+    test("empty mixins", () {
+      List<LCEConcept> mixins = concepts[LCEMixin.CONCEPT_ID]!;
+      final libPath = normPath(packagePath, "./lib/empty.dart");
+      expect(
+          mixins,
+          contains(matchesMixin("package:test_package/empty.dart:BasicMixin",
+              libPath, "BasicMixin")));
+      expect(
+          mixins,
+          contains(matchesMixin(
+              "package:test_package/empty.dart:BaseMixin", libPath, "BaseMixin",
+              baseModifier: true)));
+    });
+
+    test("constrained mixins", () {
+      List<LCEConcept> mixins = concepts[LCEMixin.CONCEPT_ID]!;
+      final libPath = normPath(packagePath, "./lib/constrained.dart");
+      expect(
+          mixins,
+          contains(matchesMixin(
+              "package:test_package/constrained.dart:onInternal",
+              libPath,
+              "onInternal")));
+      LCEMixin m = mixins.firstWhere((x) =>
+              x is LCEMixin &&
+              x.fqn == "package:test_package/constrained.dart:onInternal")
+          as LCEMixin;
+      expect(m.onClass,
+          equals("package:test_package/constrained.dart:InternalClass"));
+
+      expect(
+          mixins,
+          contains(matchesMixin(
+              "package:test_package/constrained.dart:onExternal",
+              libPath,
+              "onExternal")));
+      m = mixins.firstWhere((x) =>
+              x is LCEMixin &&
+              x.fqn == "package:test_package/constrained.dart:onExternal")
+          as LCEMixin;
+      expect(m.onClass,
+          equals("package:test_package/external.dart:ExternalClass"));
+    });
   });
 }

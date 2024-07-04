@@ -13,7 +13,7 @@ final class LCEParameter extends LCEConcept {
   LCEParameter(this.name, this.index, this.type);
 
   @override
-  Map<String, Object> toJSON() {
+  Map<String, Object?> toJSON() {
     return {"name": name, "index": index, "type": type};
   }
 }

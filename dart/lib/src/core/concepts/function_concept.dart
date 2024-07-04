@@ -16,7 +16,7 @@ final class LCEFunction extends LCEConcept {
   LCEFunction(this.fqn, this.libraryPath, this.name, this.returnType);
 
   @override
-  Map<String, Object> toJSON() {
+  Map<String, Object?> toJSON() {
     return {
       "fqn": fqn,
       "libraryPath": libraryPath,

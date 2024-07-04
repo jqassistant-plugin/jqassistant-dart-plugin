@@ -15,4 +15,7 @@ public class Mixin extends NamedConcept {
 
     @JsonAlias("base")
     private Boolean baseModifier;
+
+    @JsonAlias("on")
+    private String constraintFqn;
 }

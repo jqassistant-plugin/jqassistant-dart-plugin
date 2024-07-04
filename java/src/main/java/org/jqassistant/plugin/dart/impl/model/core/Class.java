@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -30,4 +32,13 @@ public class Class extends NamedConcept {
 
     @JsonAlias("mixin")
     private Boolean mixinModifier;
+
+    @JsonAlias("extends")
+    private String extendsFqn;
+
+    @JsonAlias("implements")
+    private List<String> implementsFqns;
+
+    @JsonAlias("usedMixins")
+    private List<String> usedMixinFqns;
 }

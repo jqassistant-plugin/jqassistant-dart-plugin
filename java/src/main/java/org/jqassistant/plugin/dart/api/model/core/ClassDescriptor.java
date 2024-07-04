@@ -1,6 +1,9 @@
 package org.jqassistant.plugin.dart.api.model.core;
 
 import com.buschmais.xo.neo4j.api.annotation.Label;
+import com.buschmais.xo.neo4j.api.annotation.Relation;
+
+import java.util.List;
 
 @Label("Class")
 public interface ClassDescriptor extends DartDescriptor, FqnDescriptor {
@@ -36,4 +39,15 @@ public interface ClassDescriptor extends DartDescriptor, FqnDescriptor {
     Boolean getMixin();
 
     void setMixin(Boolean mixin);
+
+    @Relation("EXTENDS")
+    ClassDescriptor getExtends();
+
+    void setExtends(ClassDescriptor extendss);
+
+    @Relation("IMPLEMENTS")
+    List<ClassDescriptor> getImplements();
+
+    @Relation("USES_MIXIN")
+    List<DartDescriptor> getUsesMixin();
 }

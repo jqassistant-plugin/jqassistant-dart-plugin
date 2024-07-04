@@ -18,9 +18,12 @@ public class PackageMapper {
     public List<PackageDescriptor> map(List<Package> packages, Scanner scanner) {
         List<PackageDescriptor> result = new ArrayList<>();
 
+        scanner.getContext().push(FqnResolver.class, new FqnResolver());
+
         for (var aPackage : packages) {
             FileResolver fileResolver = new LocalFileResolver(Paths.get(aPackage.getPackagePath()));
             scanner.getContext().push(FileResolver.class, fileResolver);
+
 
             PackageDescriptor packageDescriptor = scanner.getContext().getStore().create(PackageDescriptor.class);
 
@@ -40,6 +43,8 @@ public class PackageMapper {
             result.add(packageDescriptor);
             scanner.getContext().pop(FileResolver.class);
         }
+
+        scanner.getContext().pop(FqnResolver.class).resolveAll();
 
         return result;
     }

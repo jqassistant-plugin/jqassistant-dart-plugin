@@ -11,15 +11,19 @@ final class LCEMixin extends LCEConcept {
   String name;
   bool baseModifier;
 
-  LCEMixin(this.fqn, this.libraryPath, this.name, this.baseModifier);
+  String? onClass;
+
+  LCEMixin(
+      this.fqn, this.libraryPath, this.name, this.baseModifier, this.onClass);
 
   @override
-  Map<String, Object> toJSON() {
+  Map<String, Object?> toJSON() {
     return {
       "fqn": fqn,
       "libraryPath": libraryPath,
       "name": name,
-      "base": baseModifier
+      "base": baseModifier,
+      "on": onClass
     };
   }
 }

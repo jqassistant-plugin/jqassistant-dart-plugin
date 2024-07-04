@@ -16,6 +16,10 @@ final class LCEClass extends LCEConcept {
   bool abstractModifier;
   bool mixinModifier;
 
+  String? extendsType;
+  List<String> implementsTypes;
+  List<String> withTypes;
+
   LCEClass(
       this.fqn,
       this.libraryPath,
@@ -25,10 +29,13 @@ final class LCEClass extends LCEConcept {
       this.finalModifier,
       this.sealedModifier,
       this.abstractModifier,
-      this.mixinModifier);
+      this.mixinModifier,
+      this.extendsType,
+      this.implementsTypes,
+      this.withTypes);
 
   @override
-  Map<String, Object> toJSON() {
+  Map<String, Object?> toJSON() {
     return {
       "fqn": fqn,
       "libraryPath": libraryPath,
@@ -38,7 +45,10 @@ final class LCEClass extends LCEConcept {
       "final": finalModifier,
       "sealed": sealedModifier,
       "abstract": abstractModifier,
-      "mixin": mixinModifier
+      "mixin": mixinModifier,
+      "extends": extendsType,
+      "implements": implementsTypes,
+      "usedMixins": withTypes
     };
   }
 }

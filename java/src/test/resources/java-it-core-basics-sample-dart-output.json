@@ -56,6 +56,48 @@
       ],
       "class": [
         {
+          "fqn": "package:test_package/classes.dart:InternalClass",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
+          "name": "InternalClass",
+          "base": false,
+          "interface": false,
+          "final": false,
+          "sealed": false,
+          "abstract": false,
+          "mixin": false,
+          "extends": null,
+          "implements": [],
+          "usedMixins": []
+        },
+        {
+          "fqn": "package:test_package/classes.dart:InternalClass2",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
+          "name": "InternalClass2",
+          "base": false,
+          "interface": false,
+          "final": false,
+          "sealed": false,
+          "abstract": false,
+          "mixin": false,
+          "extends": null,
+          "implements": [],
+          "usedMixins": []
+        },
+        {
+          "fqn": "package:test_package/classes.dart:InternalClass3",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
+          "name": "InternalClass3",
+          "base": false,
+          "interface": false,
+          "final": false,
+          "sealed": false,
+          "abstract": false,
+          "mixin": false,
+          "extends": null,
+          "implements": [],
+          "usedMixins": []
+        },
+        {
           "fqn": "package:test_package/classes.dart:EmptyClass",
           "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
           "name": "EmptyClass",
@@ -64,7 +106,10 @@
           "final": false,
           "sealed": false,
           "abstract": false,
-          "mixin": false
+          "mixin": false,
+          "extends": null,
+          "implements": [],
+          "usedMixins": []
         },
         {
           "fqn": "package:test_package/classes.dart:EmptyAbstractMixinClass",
@@ -75,7 +120,53 @@
           "final": false,
           "sealed": false,
           "abstract": true,
-          "mixin": true
+          "mixin": true,
+          "extends": null,
+          "implements": [],
+          "usedMixins": []
+        },
+        {
+          "fqn": "package:test_package/classes.dart:Inheritance",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
+          "name": "Inheritance",
+          "base": false,
+          "interface": false,
+          "final": false,
+          "sealed": false,
+          "abstract": false,
+          "mixin": false,
+          "extends": "package:test_package/classes.dart:InternalClass",
+          "implements": [
+            "package:test_package/classes.dart:InternalClass2",
+            "package:test_package/classes.dart:InternalClass3"
+          ],
+          "usedMixins": [
+            "package:test_package/classes.dart:InternalMixin",
+            "package:test_package/classes.dart:InternalMixin2"
+          ]
+        }
+      ],
+      "mixin": [
+        {
+          "fqn": "package:test_package/classes.dart:InternalMixin",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
+          "name": "InternalMixin",
+          "base": false,
+          "on": null
+        },
+        {
+          "fqn": "package:test_package/classes.dart:InternalMixin2",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart",
+          "name": "InternalMixin2",
+          "base": false,
+          "on": null
+        },
+        {
+          "fqn": "package:test_package/mixins.dart:BaseMixin",
+          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/mixins.dart",
+          "name": "BaseMixin",
+          "base": true,
+          "on": null
         }
       ],
       "function": [
@@ -103,14 +194,6 @@
           "fqn": "package:test_package/enums.dart:BasicEnum",
           "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/enums.dart",
           "name": "BasicEnum"
-        }
-      ],
-      "mixin": [
-        {
-          "fqn": "package:test_package/mixins.dart:BaseMixin",
-          "libraryPath": "/java/src/test/resources/java-it-core-basics-sample-package/lib/mixins.dart",
-          "name": "BaseMixin",
-          "base": true
         }
       ]
     }

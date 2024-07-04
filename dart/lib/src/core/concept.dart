@@ -19,7 +19,7 @@ abstract base class LCEConcept {
    *
    * Returns all fields, except metadata by default. Also calls toJSON for all fields that are concepts, or concept arrays.
    */
-  Map<String, Object> toJSON();
+  Map<String, Object?> toJSON();
 
   @override
   String toString() {

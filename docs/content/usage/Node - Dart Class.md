@@ -19,10 +19,13 @@ aliases:
 | `sealed` (boolean)    | indicates, if the class has a `sealed` modifier                              |
 | `abstract` (boolean)  | indicates, if the class has a `abstract` modifier                            |
 | `mixin` (boolean)     | indicates, if the class has a `mixin` modifier                               |
-%%
+
 ## Relations
 
-| Name | Target Label(s) | Cardinality | Description |
-|------|-----------------|-------------|-------------|
-|      |                 |             |             |
-%%
+| Name         | Target Label(s)                                                          | Cardinality | Description                                                        |
+| ------------ | ------------------------------------------------------------------------ | ----------- | ------------------------------------------------------------------ |
+| `EXTENDS`    | [[Node - Dart Class\|:Dart:Class]]                                       | 0..1        | super class from which the class inherits via `extends` keyword    |
+| `IMPLEMENTS` | [[Node - Dart Class\|:Dart:Class]]                                       | 0..*        | class interfaces which are implemented via `implements` keyword    |
+| `USES_MIXIN` | [[Node - Dart Mixin\|:Dart:Mixin]]<br>[[Node - Dart Class\|:Dart:Class]] | 0..*        | mixins and mixin classes that are implemented using `with` keyword |
+
+

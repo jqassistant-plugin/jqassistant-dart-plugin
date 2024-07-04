@@ -14,10 +14,9 @@ aliases:
 | `libraryPath`    | absolute path of the containing library                                      |
 | `name`           | name of the mixin                                                            |
 | `base` (boolean) | indicates, if the mixin has a `base` modifier                                |
-%%
+
 ## Relations
 
-| Name | Target Label(s) | Cardinality | Description |
-|------|-----------------|-------------|-------------|
-|      |                 |             |             |
-%%
+| Name             | Target Label(s)                    | Cardinality | Description                                                     |
+| ---------------- | ---------------------------------- | ----------- | --------------------------------------------------------------- |
+| `CONSTRAINED_TO` | [[Node - Dart Class\|:Dart:Class]] | 0..1        | class to which the mixin is constrained to via the `on` keyword |

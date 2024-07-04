@@ -5,7 +5,6 @@ import 'package:jqassistant_dart_lce/src/core/concepts/enum_concept.dart';
 import 'package:jqassistant_dart_lce/src/core/concepts/function_concept.dart';
 import 'package:jqassistant_dart_lce/src/core/concepts/library_concept.dart';
 import 'package:jqassistant_dart_lce/src/core/concepts/mixin_concept.dart';
-import 'package:jqassistant_dart_lce/src/core/concepts/parameter_concept.dart';
 import 'package:jqassistant_dart_lce/src/core/concepts/variable_concept.dart';
 import 'package:path/path.dart';
 import 'package:test/expect.dart';
@@ -42,9 +41,17 @@ Matcher matchesClass(String fqn, String libraryPath, String name,
           v.abstractModifier == abstractModifier &&
           v.mixinModifier == mixinModifier;
     },
-        LCEClass(fqn, libraryPath, name, baseModifier, interfaceModifier,
-                finalModifier, sealedModifier, abstractModifier, mixinModifier)
-            .toString());
+        "LCEClass(\n"
+        "  fqn: ${fqn}\n"
+        "  libraryPath: ${libraryPath}\n"
+        "  name: ${name}\n"
+        "  baseModifier: ${baseModifier}\n"
+        "  interfaceModifier: ${interfaceModifier}\n"
+        "  finalModifier: ${finalModifier}\n"
+        "  sealedModifier: ${sealedModifier}\n"
+        "  abstractModifier: ${abstractModifier}\n"
+        "  mixinModifier: ${mixinModifier}\n"
+        ")");
 
 Matcher matchesFunction(
         String fqn, String libraryPath, String name, String returnType) =>
@@ -53,14 +60,25 @@ Matcher matchesFunction(
           f.libraryPath == libraryPath &&
           f.name == name &&
           f.returnType == returnType;
-    }, LCEFunction(fqn, libraryPath, name, returnType).toString());
+    },
+        "LCEFunction(\n"
+        "  fqn: ${fqn}\n"
+        "  libraryPath: ${libraryPath}\n"
+        "  name: ${name}\n"
+        "  returnType: ${returnType}\n"
+        ")");
 
 Matcher hasParameter(String name, int index, String type) =>
     predicate((LCEFunction f) {
       return f.parameters.any((p) {
         return p.name == name && p.index == index && p.type == type;
       });
-    }, LCEParameter(name, index, type).toString());
+    },
+        "LCEParameter(\n"
+        "  name: ${name}\n"
+        "  index: ${index}\n"
+        "  type: ${type}\n"
+        ")");
 
 Matcher matchesVariable(
         String fqn, String libraryPath, String name, String type,
@@ -76,9 +94,15 @@ Matcher matchesVariable(
           v.finalModifier == finalModifier &&
           v.constModifier == constModifier;
     },
-        LCEVariable(fqn, libraryPath, name, type, lateModifier, finalModifier,
-                constModifier)
-            .toString());
+        "LCEVariable(\n"
+        "  fqn: ${fqn}\n"
+        "  libraryPath: ${libraryPath}\n"
+        "  name: ${name}\n"
+        "  type: ${type}\n"
+        "  lateModifier: ${lateModifier}\n"
+        "  finalModifier: ${finalModifier}\n"
+        "  constModifier: ${constModifier}\n"
+        ")");
 
 Matcher matchesMixin(
   String fqn,
@@ -91,9 +115,20 @@ Matcher matchesMixin(
           v.libraryPath == libraryPath &&
           v.name == name &&
           v.baseModifier == baseModifier;
-    }, LCEMixin(fqn, libraryPath, name, baseModifier).toString());
+    },
+        "LCEMixin(\n"
+        "  fqn: ${fqn}\n"
+        "  libraryPath: ${libraryPath}\n"
+        "  name: ${name}\n"
+        "  baseModifier: ${baseModifier}\n"
+        ")");
 
 Matcher matchesEnum(String fqn, String libraryPath, String name) =>
     predicate((LCEEnum v) {
       return v.fqn == fqn && v.libraryPath == libraryPath && v.name == name;
-    }, LCEEnum(fqn, libraryPath, name).toString());
+    },
+        "LCEEnum(\n"
+        "  fqn: ${fqn}\n"
+        "  libraryPath: ${libraryPath}\n"
+        "  name: ${name}\n"
+        ")");

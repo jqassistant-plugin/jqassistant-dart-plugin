@@ -18,7 +18,7 @@ final class LCEVariable extends LCEConcept {
       this.lateModifier, this.finalModifier, this.constModifier);
 
   @override
-  Map<String, Object> toJSON() {
+  Map<String, Object?> toJSON() {
     return {
       "fqn": fqn,
       "libraryPath": libraryPath,

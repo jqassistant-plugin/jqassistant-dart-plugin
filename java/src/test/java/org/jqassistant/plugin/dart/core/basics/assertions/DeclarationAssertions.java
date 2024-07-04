@@ -44,7 +44,7 @@ public class DeclarationAssertions {
     public DeclarationAssertions assertClassPresence() {
         assertThat(classesLibDescriptor.getClasses())
             .as("classes library has two class declarations")
-            .hasSize(2);
+            .hasSize(6);
 
         Optional<ClassDescriptor> emptyClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:EmptyClass")).findFirst();
         assertThat(emptyClassDescriptorOpt)
@@ -61,6 +61,9 @@ public class DeclarationAssertions {
             .hasFieldOrPropertyWithValue("sealed", false)
             .hasFieldOrPropertyWithValue("abstract", false)
             .hasFieldOrPropertyWithValue("mixin", false);
+        assertThat(emptyClassDescriptor.getExtends()).isNull();
+        assertThat(emptyClassDescriptor.getImplements()).isEmpty();
+        assertThat(emptyClassDescriptor.getUsesMixin()).isEmpty();
 
         Optional<ClassDescriptor> abstractMixinClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:EmptyAbstractMixinClass")).findFirst();
         assertThat(abstractMixinClassDescriptorOpt)
@@ -77,6 +80,33 @@ public class DeclarationAssertions {
             .hasFieldOrPropertyWithValue("sealed", false)
             .hasFieldOrPropertyWithValue("abstract", true)
             .hasFieldOrPropertyWithValue("mixin", true);
+        assertThat(abstractMixinClassDescriptor.getExtends()).isNull();
+        assertThat(abstractMixinClassDescriptor.getImplements()).isEmpty();
+        assertThat(abstractMixinClassDescriptor.getUsesMixin()).isEmpty();
+
+        Optional<ClassDescriptor> inheritanceClassDescriptorOpt = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:Inheritance")).findFirst();
+        assertThat(abstractMixinClassDescriptorOpt)
+            .as("inheritance class is present")
+            .isPresent();
+        ClassDescriptor inheritanceClassDescriptor = inheritanceClassDescriptorOpt.get();
+        ClassDescriptor internalClassDescriptor = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:InternalClass")).findFirst().get();
+        ClassDescriptor internalClass2Descriptor = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:InternalClass2")).findFirst().get();
+        ClassDescriptor internalClass3Descriptor = classesLibDescriptor.getClasses().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:InternalClass3")).findFirst().get();
+        MixinDescriptor internalMixinDescriptor = classesLibDescriptor.getMixins().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:InternalMixin")).findFirst().get();
+        MixinDescriptor internalMixin2Descriptor = classesLibDescriptor.getMixins().stream().filter(c -> c.getFqn().equals("package:test_package/classes.dart:InternalMixin2")).findFirst().get();
+        assertThat(inheritanceClassDescriptor)
+            .as("inheritance class has all properties set correctly")
+            .hasFieldOrPropertyWithValue("name", "Inheritance")
+            .hasFieldOrPropertyWithValue("libraryPath", utils.resolvePath("/java/src/test/resources/java-it-core-basics-sample-package/lib/classes.dart"))
+            .hasFieldOrPropertyWithValue("base", false)
+            .hasFieldOrPropertyWithValue("interface", false)
+            .hasFieldOrPropertyWithValue("final", false)
+            .hasFieldOrPropertyWithValue("sealed", false)
+            .hasFieldOrPropertyWithValue("abstract", false)
+            .hasFieldOrPropertyWithValue("mixin", false);
+        assertThat(inheritanceClassDescriptor.getExtends()).isEqualTo(internalClassDescriptor);
+        assertThat(inheritanceClassDescriptor.getImplements()).containsExactlyInAnyOrder(internalClass2Descriptor, internalClass3Descriptor);
+        assertThat(inheritanceClassDescriptor.getUsesMixin()).containsExactlyInAnyOrder(internalMixinDescriptor, internalMixin2Descriptor);
 
         return this;
     }

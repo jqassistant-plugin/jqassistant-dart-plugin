@@ -4,6 +4,7 @@
 * added detection of globally declared variables/constants
 * added detection of globally declared mixins
 * added detection of globally declared enums
+* added detection of implements/extends/with relationships of declared classes
 
 # 0.1.0
 

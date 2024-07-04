@@ -1,6 +1,7 @@
 package org.jqassistant.plugin.dart.api.model.core;
 
 import com.buschmais.xo.neo4j.api.annotation.Label;
+import com.buschmais.xo.neo4j.api.annotation.Relation;
 
 @Label("Mixin")
 public interface MixinDescriptor extends DartDescriptor, FqnDescriptor {
@@ -17,4 +18,8 @@ public interface MixinDescriptor extends DartDescriptor, FqnDescriptor {
 
     void setBase(Boolean base);
 
+    @Relation("CONSTRAINED_TO")
+    ClassDescriptor getConstrainedTo();
+
+    void setConstrainedTo(ClassDescriptor constrainedTo);
 }

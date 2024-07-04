@@ -23,15 +23,32 @@ final class ClassProcessor extends Processor {
             processingContext.globalContext.sourceFilePathAbsolute) +
         ":${name}";
 
+    String? superClass = getFQNFromElement(
+        node.declaredElement?.supertype?.element,
+        returnNullOnObject: true);
+
+    List<String> implementsClasses = (node.declaredElement?.interfaces ?? [])
+        .map((iType) => getFQNFromElement(iType.element))
+        .nonNulls
+        .toList();
+    List<String> usesMixins = (node.declaredElement?.mixins ?? [])
+        .map((iType) => getFQNFromElement(iType.element))
+        .nonNulls
+        .toList();
+
     return singleEntryConceptMap(LCEClass(
-        fqn,
-        processingContext.globalContext.sourceFilePathAbsolute,
-        name,
-        node.baseKeyword != null,
-        node.interfaceKeyword != null,
-        node.finalKeyword != null,
-        node.sealedKeyword != null,
-        node.abstractKeyword != null,
-        node.mixinKeyword != null));
+      fqn,
+      processingContext.globalContext.sourceFilePathAbsolute,
+      name,
+      node.baseKeyword != null,
+      node.interfaceKeyword != null,
+      node.finalKeyword != null,
+      node.sealedKeyword != null,
+      node.abstractKeyword != null,
+      node.mixinKeyword != null,
+      superClass,
+      implementsClasses,
+      usesMixins,
+    ));
   }
 }

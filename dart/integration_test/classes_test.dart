@@ -103,5 +103,111 @@ void main() {
               baseModifier: true,
               mixinModifier: true)));
     });
+
+    test("class inheritance", () {
+      List<LCEConcept> classes = concepts[LCEClass.CONCEPT_ID]!;
+      final libPath = normPath(packagePath, "./lib/inheritance.dart");
+      expect(
+          classes,
+          contains(matchesClass(
+              "package:test_package/inheritance.dart:InternalExtends",
+              libPath,
+              "InternalExtends")));
+      LCEClass c = classes.firstWhere((x) =>
+              x is LCEClass &&
+              x.fqn == "package:test_package/inheritance.dart:InternalExtends")
+          as LCEClass;
+      expect(c.extendsType,
+          equals("package:test_package/inheritance.dart:InternalClass"));
+      expect(c.implementsTypes, isEmpty);
+      expect(c.withTypes, isEmpty);
+
+      expect(
+          classes,
+          contains(matchesClass(
+              "package:test_package/inheritance.dart:ExternalExtends",
+              libPath,
+              "ExternalExtends")));
+      c = classes.firstWhere((x) =>
+              x is LCEClass &&
+              x.fqn == "package:test_package/inheritance.dart:ExternalExtends")
+          as LCEClass;
+      expect(c.extendsType,
+          equals("package:test_package/external.dart:ExternalClass"));
+      expect(c.implementsTypes, isEmpty);
+      expect(c.withTypes, isEmpty);
+
+      expect(
+          classes,
+          contains(matchesClass(
+              "package:test_package/inheritance.dart:InternalImplements",
+              libPath,
+              "InternalImplements")));
+      c = classes.firstWhere((x) =>
+              x is LCEClass &&
+              x.fqn ==
+                  "package:test_package/inheritance.dart:InternalImplements")
+          as LCEClass;
+      expect(c.extendsType, isNull);
+      expect(c.implementsTypes,
+          contains("package:test_package/inheritance.dart:InternalClass"));
+      expect(c.implementsTypes,
+          contains("package:test_package/inheritance.dart:InternalClass2"));
+      expect(c.withTypes, isEmpty);
+
+      expect(
+          classes,
+          contains(matchesClass(
+              "package:test_package/inheritance.dart:ExternalImplements",
+              libPath,
+              "ExternalImplements")));
+      c = classes.firstWhere((x) =>
+              x is LCEClass &&
+              x.fqn ==
+                  "package:test_package/inheritance.dart:ExternalImplements")
+          as LCEClass;
+      expect(c.extendsType, isNull);
+      expect(c.implementsTypes,
+          contains("package:test_package/external.dart:ExternalClass"));
+      expect(c.implementsTypes,
+          contains("package:test_package/external.dart:ExternalClass2"));
+      expect(c.withTypes, isEmpty);
+
+      expect(
+          classes,
+          contains(matchesClass(
+              "package:test_package/inheritance.dart:InternalMixins",
+              libPath,
+              "InternalMixins")));
+      c = classes.firstWhere((x) =>
+              x is LCEClass &&
+              x.fqn == "package:test_package/inheritance.dart:InternalMixins")
+          as LCEClass;
+      expect(c.extendsType, isNull);
+      expect(c.implementsTypes, isEmpty);
+      expect(c.withTypes,
+          contains("package:test_package/inheritance.dart:InternalMixin"));
+      expect(c.withTypes,
+          contains("package:test_package/inheritance.dart:InternalMixin2"));
+      expect(c.withTypes,
+          contains("package:test_package/inheritance.dart:InternalMixinClass"));
+
+      expect(
+          classes,
+          contains(matchesClass(
+              "package:test_package/inheritance.dart:ExternalMixins",
+              libPath,
+              "ExternalMixins")));
+      c = classes.firstWhere((x) =>
+              x is LCEClass &&
+              x.fqn == "package:test_package/inheritance.dart:ExternalMixins")
+          as LCEClass;
+      expect(c.extendsType, isNull);
+      expect(c.implementsTypes, isEmpty);
+      expect(c.withTypes,
+          contains("package:test_package/external.dart:ExternalMixin"));
+      expect(c.withTypes,
+          contains("package:test_package/external.dart:ExternalMixin2"));
+    });
   });
 }

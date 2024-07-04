@@ -23,10 +23,15 @@ final class MixinProcessor extends Processor {
             processingContext.globalContext.sourceFilePathAbsolute) +
         ":${name}";
 
+    String? onClass = getFQNFromElement(
+        node.declaredElement?.superclassConstraints[0].element,
+        returnNullOnObject: true);
+
     return singleEntryConceptMap(LCEMixin(
         fqn,
         processingContext.globalContext.sourceFilePathAbsolute,
         name,
-        node.baseKeyword != null));
+        node.baseKeyword != null,
+        onClass));
   }
 }

@@ -13,7 +13,7 @@ final class LCEEnum extends LCEConcept {
   LCEEnum(this.fqn, this.libraryPath, this.name);
 
   @override
-  Map<String, Object> toJSON() {
+  Map<String, Object?> toJSON() {
     return {"fqn": fqn, "libraryPath": libraryPath, "name": name};
   }
 }
