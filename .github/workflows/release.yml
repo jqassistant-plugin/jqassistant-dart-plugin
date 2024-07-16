@@ -36,6 +36,7 @@ jobs:
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
+    needs: [ maven-release ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -74,7 +75,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
-    needs: [ dart-build, maven-release ]
+    needs: [ dart-build ]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
