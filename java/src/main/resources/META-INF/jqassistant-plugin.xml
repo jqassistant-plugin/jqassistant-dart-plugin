@@ -1,7 +1,8 @@
 <jqassistant-plugin xmlns="http://schema.jqassistant.org/plugin/v1.10"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="http://schema.jqassistant.org/plugin/v1.10 https://schema.jqassistant.org/plugin/jqassistant-plugin-v1.8.xsd"
-                    name="jQAssistant Dart Plugin" id="jqassistant.plugin.dart">
+                    name="jQAssistant Dart Plugin" id="jqassistant.plugin.dart"
+                    version="${project.version}">
     <description>Provides a scanner for Dart.</description>
     <model>
         <class>org.jqassistant.plugin.dart.api.model.core.ClassDescriptor</class>
