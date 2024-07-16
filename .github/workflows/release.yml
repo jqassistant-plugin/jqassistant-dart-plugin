@@ -35,7 +35,18 @@ jobs:
       ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
+  prepare-dart-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'dart/pubspec.yaml'
+          propertyPath: 'version'
+          value: ${{ github.event.inputs.releaseVersion }}
+          message: "prepare release version ${{ github.event.inputs.releaseVersion }} of LCE tool"
   dart-build:
+    needs: [ prepare-dart-build ]
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -51,12 +62,6 @@ jobs:
             binary-name: jqa_dart_lce_windows_amd64.exe
     steps:
       - uses: actions/checkout@v4
-      - uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: 'dart/pubspec.yaml'
-          propertyPath: 'version'
-          value: ${{ github.event.inputs.releaseVersion }}
-          message: "prepare release version ${{ github.event.inputs.releaseVersion }} of LCE tool"
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
         working-directory: ./dart
