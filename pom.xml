@@ -10,7 +10,7 @@
 
     <groupId>org.jqassistant.plugin.dart</groupId>
     <artifactId>parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>jQAssistant Dart Plugin Parent</name>
