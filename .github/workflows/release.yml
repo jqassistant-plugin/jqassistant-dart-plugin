@@ -34,18 +34,7 @@ on:
         default: false
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check input values
-        run: |
-          echo "skipJavaRelease: ${{ github.event.inputs.skipJavaRelease }}"
-          echo "skipDartRelease: ${{ github.event.inputs.skipDartRelease }}"
-          echo "releaseVersion: ${{ github.event.inputs.releaseVersion }}"
-          echo "developmentVersion: ${{ github.event.inputs.developmentVersion }}"
-          echo "dryRun: ${{ github.event.inputs.dryRun }}"
   maven-release:
-    needs: [ debug ]
     if: ${{ ! github.event.inputs.skipJavaRelease }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
@@ -60,8 +49,8 @@ jobs:
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
-    needs: [ maven-release ]
-    if: ${{ always() && !cancelled() && !github.event.inputs.skipDartRelease }}
+    needs: maven-release
+    if: ${{ always() && !failure() && !github.event.inputs.skipDartRelease }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -86,7 +75,7 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.branch }}
           createPR: false
   dart-build:
-    needs: [ prepare-dart-build ]
+    needs: prepare-dart-build
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -116,7 +105,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
-    needs: [ dart-build ]
+    needs: dart-build
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
