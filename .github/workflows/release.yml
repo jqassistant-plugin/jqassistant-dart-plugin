@@ -50,7 +50,7 @@ jobs:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
     needs: [ maven-release ]
-    if: ${{ (success() || needs.maven-release.result == 'skipped') && ! github.event.inputs.skipDartRelease }}
+    if: ${{ always() && !cancelled() && !github.event.inputs.skipDartRelease }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
