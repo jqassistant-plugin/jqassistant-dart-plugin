@@ -38,7 +38,7 @@ jobs:
     if: ${{ github.event.inputs.javaRelease == 'true' }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
-      branch: ${{ github.event.inputs.branch }}
+      branch: "main" # TODO: Remove in central GH action
       releaseVersion: ${{ github.event.inputs.releaseVersion }}
       developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
       dryRun: ${{ github.event.inputs.dryRun }}
@@ -101,7 +101,7 @@ jobs:
       - name: Compile Binaries
         run: dart compile exe bin/jqa_dart_lce.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
         working-directory: ./dart
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
@@ -115,7 +115,7 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
         working-directory: ./dart
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           path: ./artifacts
       - name: Create GitHub Release
