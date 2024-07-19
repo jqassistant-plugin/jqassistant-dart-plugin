@@ -9,10 +9,6 @@ on:
         type: string
         required: false
         default: 17
-      branch:
-        description: "The branch to checkout when cutting the release."
-        required: true
-        default: "main"
       releaseVersion:
         description: "Version of the release."
         required: true
@@ -23,29 +19,37 @@ on:
         default: "X.Y+1.Z"
 
 jobs:
-  maven-release:
-    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      releaseVersion: ${{ github.event.inputs.releaseVersion }}
-      developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
-    secrets:
-      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
-      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
-      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
-      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
-      sonar_token: ${{ secrets.SONAR_TOKEN }}
+  #  maven-release:
+  #    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
+  #    with:
+  #      branch: ${{ github.event.inputs.branch }}
+  #      releaseVersion: ${{ github.event.inputs.releaseVersion }}
+  #      developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
+  #    secrets:
+  #      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+  #      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+  #      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
+  #      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+  #      sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
-    needs: [ maven-release ]
+    #    needs: [ maven-release ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: fjogeleit/yaml-update-action@main
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+      - name: Set Dart artifact release version
+        uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: 'dart/pubspec.yaml'
           propertyPath: 'version'
           value: ${{ github.event.inputs.releaseVersion }}
           message: "prepare release version ${{ github.event.inputs.releaseVersion }} of LCE tool"
+          branch: ${{ steps.extract_branch.outputs.branch }}
+          createPR: false
   dart-build:
     needs: [ prepare-dart-build ]
     runs-on: ${{ matrix.runs-on }}
@@ -101,9 +105,16 @@ jobs:
       - name: Publish Package on pub.dev
         run: dart pub publish --force
         working-directory: ./dart
-      - uses: fjogeleit/yaml-update-action@main
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+      - name: Set next version of Dart artifact
+        uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: 'dart/pubspec.yaml'
           propertyPath: 'version'
           value: ${{ github.event.inputs.developmentVersion }}
           message: "prepare dev version ${{ github.event.inputs.developmentVersion }} of LCE tool"
+          branch: ${{ steps.extract_branch.outputs.branch }}
+          createPR: false
