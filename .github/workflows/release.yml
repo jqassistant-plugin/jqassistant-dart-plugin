@@ -19,18 +19,18 @@ on:
         default: "17"
       dryRun:
         description: "Perform a dry run of the Maven Release"
+        type: boolean
         required: true
         default: false
-        type: boolean
       skipJavaRelease:
         description: "Skip releasing the Java artifacts to Maven Central"
-        required: true
         type: boolean
+        required: true
         default: false
       skipDartRelease:
         description: "Skip releasing the Dart artifacts to GitHub and pub.dev"
-        required: true
         type: boolean
+        required: true
         default: false
 
 jobs:
@@ -49,8 +49,8 @@ jobs:
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
-    if: ${{ success() && ! github.event.inputs.skipDartRelease }}
     needs: [ maven-release ]
+    if: ${{ (success() || jobs.maven-release.result == 'skipped') && ! github.event.inputs.skipDartRelease }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
