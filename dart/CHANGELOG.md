@@ -1,3 +1,7 @@
+# 0.2.1
+
+Release to keep versions aligned - No changes
+
 # 0.2.0
 
 * added detection of globally declared functions and their parameters

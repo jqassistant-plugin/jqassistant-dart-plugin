@@ -70,9 +70,14 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
         working-directory: ./dart
-      - run: mkdir ${{ matrix.runs-on }}
+      - name: Verify Package
+        run: dart pub publish --dry-run
         working-directory: ./dart
-      - run: dart compile exe bin/jqa_dart_lce.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - name: Prepare Output Directories
+        run: mkdir ${{ matrix.runs-on }}
+        working-directory: ./dart
+      - name: Compile Binaries
+        run: dart compile exe bin/jqa_dart_lce.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
         working-directory: ./dart
       - uses: actions/upload-artifact@v2
         with:
@@ -84,6 +89,9 @@ jobs:
     permissions: write-all
     steps:
       - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
       - uses: actions/download-artifact@v2
         with:
           path: ./artifacts
@@ -96,12 +104,6 @@ jobs:
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-        working-directory: ./dart
-      - name: Verify Package
-        run: dart pub publish --dry-run
-        working-directory: ./dart
       - name: Publish Package on pub.dev
         run: dart pub publish --force
         working-directory: ./dart
