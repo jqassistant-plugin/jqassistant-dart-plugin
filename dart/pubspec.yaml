@@ -1,5 +1,5 @@
 name: jqassistant_dart_lce
-version: 0.2.1
+version: 0.2.0
 description: Tool to extract language concepts from a Dart codebase and export them to a JSON file.
 repository: https://github.com/jqassistant-plugin/jqassistant-dart-plugin
 issue_tracker: https://github.com/jqassistant-plugin/jqassistant-dart-plugin/issues
