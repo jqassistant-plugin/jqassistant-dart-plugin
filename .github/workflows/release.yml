@@ -4,11 +4,6 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      java_version:
-        description: Java version to use
-        type: string
-        required: false
-        default: "17"
       releaseVersion:
         description: "Version of the release."
         required: true
@@ -17,6 +12,16 @@ on:
         description: "Version to use for new local working copy."
         required: true
         default: "X.Y+1.Z"
+      java_version:
+        description: Java version to use
+        type: string
+        required: false
+        default: "17"
+      dryRun:
+        description: "Perform a dry run of the Maven Release"
+        required: true
+        default: false
+        type: boolean
       skipJavaRelease:
         description: "Skip releasing the Java artifacts to Maven Central"
         required: true
@@ -36,6 +41,7 @@ jobs:
       branch: ${{ github.event.inputs.branch }}
       releaseVersion: ${{ github.event.inputs.releaseVersion }}
       developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
+      dryRun: ${{ github.event.inputs.dryRun }}
     secrets:
       ossrh_username: ${{ secrets.OSSRH_USERNAME }}
       ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
