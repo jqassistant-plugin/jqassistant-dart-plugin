@@ -8,7 +8,7 @@ on:
         description: Java version to use
         type: string
         required: false
-        default: 17
+        default: "17"
       releaseVersion:
         description: "Version of the release."
         required: true
@@ -17,22 +17,34 @@ on:
         description: "Version to use for new local working copy."
         required: true
         default: "X.Y+1.Z"
+      skipJavaRelease:
+        description: "Skip releasing the Java artifacts to Maven Central"
+        required: true
+        type: boolean
+        default: false
+      skipDartRelease:
+        description: "Skip releasing the Dart artifacts to GitHub and pub.dev"
+        required: true
+        type: boolean
+        default: false
 
 jobs:
-  #  maven-release:
-  #    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
-  #    with:
-  #      branch: ${{ github.event.inputs.branch }}
-  #      releaseVersion: ${{ github.event.inputs.releaseVersion }}
-  #      developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
-  #    secrets:
-  #      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
-  #      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
-  #      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
-  #      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
-  #      sonar_token: ${{ secrets.SONAR_TOKEN }}
+  maven-release:
+    if: ${{ ! github.event.inputs.skipJavaRelease }}
+    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
+    with:
+      branch: ${{ github.event.inputs.branch }}
+      releaseVersion: ${{ github.event.inputs.releaseVersion }}
+      developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
+    secrets:
+      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
+      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
-    #    needs: [ maven-release ]
+    if: ${{ ! github.event.inputs.skipDartRelease }}
+    needs: [ maven-release ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -57,6 +69,7 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.branch }}
           createPR: false
   dart-build:
+    if: ${{ ! github.event.inputs.skipDartRelease }}
     needs: [ prepare-dart-build ]
     runs-on: ${{ matrix.runs-on }}
     strategy:
@@ -87,6 +100,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
+    if: ${{ ! github.event.inputs.skipDartRelease }}
     needs: [ dart-build ]
     runs-on: ubuntu-latest
     permissions: write-all
