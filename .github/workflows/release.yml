@@ -76,6 +76,7 @@ jobs:
           createPR: false
   dart-build:
     needs: prepare-dart-build
+    if: !{ { always() && (needs.prepare-dart-build.result != 'cancelled' || needs.prepare-dart-build.result != 'failure' ) } }
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -106,6 +107,7 @@ jobs:
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
     needs: dart-build
+    if: !{ { always() && (needs.dart-build.result != 'cancelled' || needs.dart-build.result != 'failure' ) } }
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
