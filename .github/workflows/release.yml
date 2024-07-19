@@ -35,7 +35,7 @@ on:
 
 jobs:
   maven-release:
-    if: ${{ github.event.inputs.javaRelease }}
+    if: ${{ github.event.inputs.javaRelease == 'true' }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
       branch: ${{ github.event.inputs.branch }}
@@ -50,7 +50,7 @@ jobs:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
     needs: maven-release
-    if: ${{ always() && needs.maven-release.result != 'failure' && github.event.inputs.dartRelease }}
+    if: ${{ always() && (needs.maven-release.result != 'cancelled' || needs.maven-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
