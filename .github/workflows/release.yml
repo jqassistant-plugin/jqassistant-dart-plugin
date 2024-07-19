@@ -22,20 +22,20 @@ on:
         type: boolean
         required: true
         default: false
-      skipJavaRelease:
-        description: "Skip releasing the Java artifacts to Maven Central"
+      javaRelease:
+        description: "Release Java artifacts"
         type: boolean
         required: true
-        default: false
-      skipDartRelease:
-        description: "Skip releasing the Dart artifacts to GitHub and pub.dev"
+        default: true
+      dartRelease:
+        description: "Release Dart artifacts"
         type: boolean
         required: true
-        default: false
+        default: true
 
 jobs:
   maven-release:
-    if: ${{ ! github.event.inputs.skipJavaRelease }}
+    if: ${{ github.event.inputs.javaRelease }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
       branch: ${{ github.event.inputs.branch }}
@@ -50,7 +50,7 @@ jobs:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
     needs: maven-release
-    if: ${{ always() && !failure() && !github.event.inputs.skipDartRelease }}
+    if: ${{ always() && needs.maven-release.result != 'failure' && github.event.inputs.dartRelease }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
