@@ -35,6 +35,7 @@ on:
 
 jobs:
   maven-release:
+    name: Maven Release
     if: ${{ github.event.inputs.javaRelease == 'true' }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
@@ -48,6 +49,7 @@ jobs:
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   prepare-dart-build:
+    name: Dart Build Preparation
     needs: maven-release
     if: ${{ always() && (needs.maven-release.result != 'cancelled' || needs.maven-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
     runs-on: ubuntu-latest
@@ -74,6 +76,7 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.branch }}
           createPR: false
   dart-build:
+    name: Dart Build
     needs: prepare-dart-build
     if: ${{ always() && (needs.prepare-dart-build.result != 'cancelled' || needs.prepare-dart-build.result != 'failure' )  && github.event.inputs.dartRelease == 'true' }}
     runs-on: ${{ matrix.runs-on }}
@@ -105,6 +108,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
+    name: Dart Release
     needs: dart-build
     if: ${{ always() && (needs.dart-build.result != 'cancelled' || needs.dart-build.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
     runs-on: ubuntu-latest
