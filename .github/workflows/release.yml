@@ -76,7 +76,7 @@ jobs:
           createPR: false
   dart-build:
     needs: prepare-dart-build
-    if: !{ { always() && (needs.prepare-dart-build.result != 'cancelled' || needs.prepare-dart-build.result != 'failure' ) } }
+    if: !{ { always() && (needs.prepare-dart-build.result != 'cancelled' || needs.prepare-dart-build.result != 'failure' )  && github.event.inputs.dartRelease == 'true' } }
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -107,7 +107,7 @@ jobs:
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
     needs: dart-build
-    if: !{ { always() && (needs.dart-build.result != 'cancelled' || needs.dart-build.result != 'failure' ) } }
+    if: !{ { always() && (needs.dart-build.result != 'cancelled' || needs.dart-build.result != 'failure' ) && github.event.inputs.dartRelease == 'true' } }
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
