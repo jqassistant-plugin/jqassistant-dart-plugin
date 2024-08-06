@@ -107,13 +107,6 @@ jobs:
         with:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
-      - name: Delete Pre-existing Release Tags
-        run: |
-          if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
-            git push origin --delete ${{ github.event.inputs.releaseVersion }}
-          else
-            echo "Tag '${{ github.event.inputs.releaseVersion }}' does not exist remotely."
-          fi
   dart-release:
     name: Dart Release
     needs: dart-build
@@ -121,6 +114,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
+      - name: Delete Pre-existing Release Tags
+        run: |
+          if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
+            git push origin --delete ${{ github.event.inputs.releaseVersion }}
+          else
+            echo "Tag '${{ github.event.inputs.releaseVersion }}' does not exist remotely."
+          fi
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
