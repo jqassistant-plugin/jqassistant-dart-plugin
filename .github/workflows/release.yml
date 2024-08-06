@@ -109,7 +109,7 @@ jobs:
           path: ./dart/${{ matrix.runs-on }}
       - name: Delete Pre-existing Release Tags
         run: |
-          if git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }}; then
+          if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
             git push origin --delete ${{ github.event.inputs.releaseVersion }}
           else
             echo "Tag '${{ github.event.inputs.releaseVersion }}' does not exist remotely."
