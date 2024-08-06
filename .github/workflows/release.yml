@@ -121,10 +121,6 @@ jobs:
           else
             echo "Tag '${{ github.event.inputs.releaseVersion }}' does not exist remotely."
           fi
-      - uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-        working-directory: ./dart
       - uses: actions/download-artifact@v4
         with:
           path: ./artifacts
@@ -137,8 +133,10 @@ jobs:
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update Tags
-        run: git push origin --tags
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
       - name: Publish Package on pub.dev
         run: dart pub publish --force
         working-directory: ./dart
