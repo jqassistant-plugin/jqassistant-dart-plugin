@@ -1,0 +1,9 @@
+jqassistant:
+  plugins:
+    - group-id: org.jqassistant.plugin.dart
+      artifact-id: jqassistant-dart-plugin
+      version: 1.0.0-SNAPSHOT
+  scan:
+    include:
+      files:
+        - dart:package::.reports/jqa/dart-output.json

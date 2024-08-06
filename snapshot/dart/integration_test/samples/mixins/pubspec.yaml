@@ -1,0 +1,5 @@
+name: test_package
+version: 1.0.0
+description: jQA Dart Plugin Core test package
+environment:
+  sdk: ^3.0.0
