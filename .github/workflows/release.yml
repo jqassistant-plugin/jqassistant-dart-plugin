@@ -107,6 +107,13 @@ jobs:
         with:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
+      - name: Delete Pre-existing Release Tags
+        run: |
+          if git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }}; then
+            git push origin --delete ${{ github.event.inputs.releaseVersion }}
+          else
+            echo "Tag '${{ github.event.inputs.releaseVersion }}' does not exist remotely."
+          fi
   dart-release:
     name: Dart Release
     needs: dart-build
@@ -130,6 +137,8 @@ jobs:
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Tags
+        run: git push origin --tags
       - name: Publish Package on pub.dev
         run: dart pub publish --force
         working-directory: ./dart
