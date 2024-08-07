@@ -72,8 +72,8 @@ jobs:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
   dart-build:
     name: Dart Binaries Build
-    needs: maven-release
-    if: ${{ always() && needs.maven-release.result != 'cancelled' && needs.maven-release.result != 'failure' && github.event.inputs.dartRelease == 'true' }}
+    needs: [ prepare-release, maven-release ]
+    if: ${{ always() && needs.prepare-release.result != 'cancelled' && needs.prepare-release.result != 'failure' && needs.maven-release.result != 'cancelled' && needs.maven-release.result != 'failure' && github.event.inputs.dartRelease == 'true' }}
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
