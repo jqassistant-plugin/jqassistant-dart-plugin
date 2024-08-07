@@ -1,0 +1,120 @@
+---
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: "Version of the release."
+        required: true
+        default: "X.Y.Z"
+      developmentVersion:
+        description: "Version to use for new local working copy."
+        required: true
+        default: "X.Y+1.Z"
+      java_version:
+        description: Java version to use
+        type: string
+        required: false
+        default: "17"
+      dryRun:
+        description: "Perform a dry run of the Maven Release"
+        type: boolean
+        required: true
+        default: false
+      javaRelease:
+        description: "Release Java artifacts"
+        type: boolean
+        required: true
+        default: true
+      dartRelease:
+        description: "Release Dart artifacts"
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  prepare-release:
+    name: Prepare Release
+    if: ${{ github.event.inputs.dartRelease == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
+      - name: Verify Package
+        run: dart pub publish --dry-run
+        working-directory: ./dart
+  maven-release:
+    needs: prepare-release
+    if: ${{ always() && needs.prepare-release.result != 'cancelled' && needs.prepare-release.result != 'failure' &&  github.event.inputs.javaRelease == 'true' }}
+    uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
+    with:
+      releaseVersion: ${{ github.event.inputs.releaseVersion }}
+      developmentVersion: "${{ github.event.inputs.developmentVersion }}-SNAPSHOT"
+      dryRun: ${{ github.event.inputs.dryRun }}
+    secrets:
+      ossrh_username: ${{ secrets.OSSRH_USERNAME }}
+      ossrh_password: ${{ secrets.OSSRH_PASSWORD }}
+      ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
+      ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+  dart-build:
+    name: Dart Binaries Build
+    needs: maven-release
+    if: ${{ always() && needs.maven-release.result != 'cancelled' && needs.maven-release.result != 'failure' && github.event.inputs.dartRelease == 'true' }}
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        runs-on: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
+        include:
+          - runs-on: ubuntu-latest
+            binary-name: jqa_dart_lce_linux_amd64
+          - runs-on: macos-13
+            binary-name: jqa_dart_lce_macos_amd64
+          - runs-on: macos-14
+            binary-name: jqa_dart_lce_macos_arm64
+          - runs-on: windows-latest
+            binary-name: jqa_dart_lce_windows_amd64.exe
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
+      - name: Prepare Output Directories
+        run: mkdir ${{ matrix.runs-on }}
+        working-directory: ./dart
+      - name: Compile Binaries
+        run: dart compile exe bin/jqa_dart_lce.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+        working-directory: ./dart
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.runs-on }}
+          path: ./dart/${{ matrix.runs-on }}
+  dart-release:
+    name: Dart GitHub Release
+    needs: dart-build
+    if: ${{ always() && needs.dart-build.result != 'cancelled' && needs.dart-build.result != 'failure' && github.event.inputs.dartRelease == 'true' }}
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+      - name: Delete Pre-existing Release Tags
+        run: |
+          if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
+            git push origin --delete ${{ github.event.inputs.releaseVersion }}
+          fi
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.event.inputs.releaseVersion }}
+          tag_name: ${{ github.event.inputs.releaseVersion }}
+          draft: false
+          prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
+          files: ./artifacts/*/*
+          token: ${{ secrets.PERSONAL_TOKEN }}
