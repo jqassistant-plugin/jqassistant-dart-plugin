@@ -41,12 +41,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-        working-directory: ./dart
-      - name: Verify Package
-        run: dart pub publish --dry-run
-        working-directory: ./dart
       - name: Set Dart artifact release version
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -56,9 +50,15 @@ jobs:
           message: "prepare release version ${{ github.event.inputs.releaseVersion }} of LCE tool"
           branch: ${{ github.ref_name }}
           createPR: false
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
+      - name: Verify Package
+        run: dart pub publish --dry-run
+        working-directory: ./dart
   maven-release:
     needs: prepare-release
-    if: ${{ always() && (needs.prepare-release.result != 'cancelled' || needs.prepare-release.result != 'failure' ) &&  github.event.inputs.javaRelease == 'true' }}
+    if: ${{ always() && needs.prepare-release.result != 'cancelled' && needs.prepare-release.result != 'failure' &&  github.event.inputs.javaRelease == 'true' }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
       releaseVersion: ${{ github.event.inputs.releaseVersion }}
@@ -73,7 +73,7 @@ jobs:
   dart-build:
     name: Dart Binaries Build
     needs: maven-release
-    if: ${{ always() && (needs.maven-release.result != 'cancelled' || needs.maven-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
+    if: ${{ always() && needs.maven-release.result != 'cancelled' && needs.maven-release.result != 'failure' && github.event.inputs.dartRelease == 'true' }}
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -105,7 +105,7 @@ jobs:
   dart-release:
     name: Dart GitHub Release
     needs: dart-build
-    if: ${{ always() && (needs.dart-build.result != 'cancelled' || needs.dart-build.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
+    if: ${{ always() && needs.dart-build.result != 'cancelled' && needs.dart-build.result != 'failure' && github.event.inputs.dartRelease == 'true' }}
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
