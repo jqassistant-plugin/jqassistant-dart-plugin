@@ -113,11 +113,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: ./artifacts
-      - name: Delete Pre-existing Release Tags
-        run: |
-          if git show-ref --tags --verify --quiet "refs/tags/${{ github.event.inputs.releaseVersion }}"; then
-            git push origin --delete ${{ github.event.inputs.releaseVersion }}
-          fi
+      - name: Delete Potential Pre-existing Release-Tag
+        uses: ClementTsang/delete-tag-and-release@v0.3.1
+        with:
+          tag_name: { { github.event.inputs.releaseVersion } }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
