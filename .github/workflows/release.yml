@@ -121,7 +121,7 @@ jobs:
           draft: false
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
       - name: Set next version of Dart artifact
         uses: fjogeleit/yaml-update-action@main
         with:
