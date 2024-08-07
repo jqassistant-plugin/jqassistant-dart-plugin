@@ -34,9 +34,31 @@ on:
         default: true
 
 jobs:
+  prepare-release:
+    name: Prepare Release
+    if: ${{ github.event.inputs.dartRelease == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+        working-directory: ./dart
+      - name: Verify Package
+        run: dart pub publish --dry-run
+        working-directory: ./dart
+      - name: Set Dart artifact release version
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'dart/pubspec.yaml'
+          propertyPath: 'version'
+          value: ${{ github.event.inputs.releaseVersion }}
+          message: "prepare release version ${{ github.event.inputs.releaseVersion }} of LCE tool"
+          branch: ${{ github.ref_name }}
+          createPR: false
   maven-release:
-    name: Maven Release
-    if: ${{ github.event.inputs.javaRelease == 'true' }}
+    needs: prepare-release
+    if: ${{ always() && (needs.prepare-release.result != 'cancelled' || needs.prepare-release.result != 'failure' ) &&  github.event.inputs.javaRelease == 'true' }}
     uses: jqassistant-tooling/jqassistant-github-actions/.github/workflows/release.yml@main
     with:
       releaseVersion: ${{ github.event.inputs.releaseVersion }}
@@ -48,37 +70,10 @@ jobs:
       ossrh_signing_key: ${{ secrets.OSSRH_SIGNING_KEY }}
       ossrh_signing_password: ${{ secrets.OSSRH_SIGNING_PASSWORD }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
-  prepare-dart-build:
-    name: Dart Build Preparation
-    needs: maven-release
-    if: ${{ always() && (needs.maven-release.result != 'cancelled' || needs.maven-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-        working-directory: ./dart
-      - name: Verify Package
-        run: dart pub publish --dry-run
-        working-directory: ./dart
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
-      - name: Set Dart artifact release version
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: 'dart/pubspec.yaml'
-          propertyPath: 'version'
-          value: ${{ github.event.inputs.releaseVersion }}
-          message: "prepare release version ${{ github.event.inputs.releaseVersion }} of LCE tool"
-          branch: ${{ steps.extract_branch.outputs.branch }}
-          createPR: false
   dart-build:
     name: Dart Binaries Build
-    needs: prepare-dart-build
-    if: ${{ always() && (needs.prepare-dart-build.result != 'cancelled' || needs.prepare-dart-build.result != 'failure' )  && github.event.inputs.dartRelease == 'true' }}
+    needs: maven-release
+    if: ${{ always() && (needs.maven-release.result != 'cancelled' || needs.maven-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -114,13 +109,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - name: Delete Pre-existing Release Tags
-        run: |
-          if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
-            git push origin --delete ${{ github.event.inputs.releaseVersion }}
-          else
-            echo "Skipping - Tag '${{ github.event.inputs.releaseVersion }}' does not exist."
-          fi
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: ./artifacts
@@ -133,26 +122,6 @@ jobs:
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
-  dart-publish:
-    name: Dart pub.dev Publish
-    needs: dart-release
-    permissions: write-all
-    if: ${{ always() && (needs.dart-release.result != 'cancelled' || needs.dart-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-    with:
-      working-directory: ./dart
-  dart-post-release:
-    name: Dart Post-Processing
-    needs: dart-publish
-    if: ${{ always() && (needs.dart-publish.result != 'cancelled' || needs.dart-publish.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v4
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
       - name: Set next version of Dart artifact
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -160,5 +129,5 @@ jobs:
           propertyPath: 'version'
           value: ${{ github.event.inputs.developmentVersion }}
           message: "prepare dev version ${{ github.event.inputs.developmentVersion }} of LCE tool"
-          branch: ${{ steps.extract_branch.outputs.branch }}
+          branch: ${{ github.ref_name }}
           createPR: false
