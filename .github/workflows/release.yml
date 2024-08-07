@@ -76,7 +76,7 @@ jobs:
           branch: ${{ steps.extract_branch.outputs.branch }}
           createPR: false
   dart-build:
-    name: Dart Build
+    name: Dart Binaries Build
     needs: prepare-dart-build
     if: ${{ always() && (needs.prepare-dart-build.result != 'cancelled' || needs.prepare-dart-build.result != 'failure' )  && github.event.inputs.dartRelease == 'true' }}
     runs-on: ${{ matrix.runs-on }}
@@ -108,7 +108,7 @@ jobs:
           name: bin-${{ matrix.runs-on }}
           path: ./dart/${{ matrix.runs-on }}
   dart-release:
-    name: Dart Release
+    name: Dart GitHub Release
     needs: dart-build
     if: ${{ always() && (needs.dart-build.result != 'cancelled' || needs.dart-build.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
     runs-on: ubuntu-latest
@@ -133,11 +133,21 @@ jobs:
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
+  dart-publish:
+    name: Dart pub.dev Publish
+    needs: dart-release
+    if: ${{ always() && (needs.dart-release.result != 'cancelled' || needs.dart-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      working-directory: ./dart
+  dart-post-release:
+    name: Dart Post-Processing
+    needs: dart-publish
+    if: ${{ always() && (needs.dart-publish.result != 'cancelled' || needs.dart-publish.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
       - uses: actions/checkout@v4
-      - name: Publish Package on pub.dev
-        uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-        with:
-          working-directory: ./dart
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
