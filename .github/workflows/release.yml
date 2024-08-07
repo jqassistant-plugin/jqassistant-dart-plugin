@@ -115,7 +115,7 @@ jobs:
           path: ./artifacts
       - name: Delete Pre-existing Release Tags
         run: |
-          if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
+          if git show-ref --tags --verify --quiet "refs/tags/${{ github.event.inputs.releaseVersion }}"; then
             git push origin --delete ${{ github.event.inputs.releaseVersion }}
           fi
       - name: Create GitHub Release
