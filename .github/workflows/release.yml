@@ -136,6 +136,7 @@ jobs:
   dart-publish:
     name: Dart pub.dev Publish
     needs: dart-release
+    permissions: write-all
     if: ${{ always() && (needs.dart-release.result != 'cancelled' || needs.dart-release.result != 'failure' ) && github.event.inputs.dartRelease == 'true' }}
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
     with:
