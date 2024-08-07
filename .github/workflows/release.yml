@@ -119,7 +119,7 @@ jobs:
           if [ git ls-remote --exit-code origin refs/tags/${{ github.event.inputs.releaseVersion }} ]; then
             git push origin --delete ${{ github.event.inputs.releaseVersion }}
           else
-            echo "Tag '${{ github.event.inputs.releaseVersion }}' does not exist remotely."
+            echo "Skipping - Tag '${{ github.event.inputs.releaseVersion }}' does not exist."
           fi
       - uses: actions/download-artifact@v4
         with:
@@ -134,12 +134,10 @@ jobs:
           files: ./artifacts/*/*
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-        working-directory: ./dart
       - name: Publish Package on pub.dev
-        run: dart pub publish --force
-        working-directory: ./dart
+        uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+        with:
+          working-directory: ./dart
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
