@@ -16,11 +16,11 @@ jobs:
           TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.GH_APP_CREDENTIALS_TOKEN }})"
           echo "::add-mask::$TOKEN"
           echo "::set-output name=token::$TOKEN"
-      - name: Use the obtained token
-        run: |
-          curl -X POST -H 'Content-Type: application/json' \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -d '{"context":"test","state":"success"}' \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
-        env:
-          GITHUB_TOKEN: ${{ steps.githubAppAuth.outputs.token }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Test
+          tag_name: 9.9.9
+          draft: false
+          prerelease: true
+          token: ${{ steps.githubAppAuth.outputs.token }}
