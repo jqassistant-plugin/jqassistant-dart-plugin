@@ -118,6 +118,12 @@ jobs:
           tag_name: ${{ github.event.inputs.releaseVersion }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Obtain a GitHub App Installation Access Token
+        id: githubAppAuth
+        run: |
+          TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.GH_APP_CREDENTIALS_TOKEN }})"
+          echo "::add-mask::$TOKEN"
+          echo "::set-output name=token::$TOKEN"
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -126,7 +132,7 @@ jobs:
           draft: false
           prerelease: ${{ startsWith(github.event.inputs.releaseVersion, '0.') }}
           files: ./artifacts/*/*
-          token: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ steps.githubAppAuth.outputs.token }}
       - name: Set next version of Dart artifact
         uses: fjogeleit/yaml-update-action@main
         with:
