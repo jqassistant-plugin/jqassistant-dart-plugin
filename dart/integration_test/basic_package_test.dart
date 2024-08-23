@@ -11,7 +11,7 @@ void main() {
     late List<LCEPackage> scanResult;
 
     setUpAll(() async {
-      scanResult = await processPackages(packagePath);
+      scanResult = await processPackages(packagePath, new ExtractorOptions());
     });
 
     test("package exists", () {

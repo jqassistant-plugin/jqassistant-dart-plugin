@@ -12,7 +12,8 @@ void main() {
     late ConceptMap concepts;
 
     setUpAll(() async {
-      final scanResult = await processPackages(packagePath);
+      final scanResult =
+          await processPackages(packagePath, new ExtractorOptions());
       concepts = scanResult[0].concepts;
     });
 
