@@ -1,3 +1,7 @@
+# 0.2.3
+
+* added CLI option `--sdk-path`/`-S` to set Dart SDK path
+
 # 0.2.2
 
 Release to keep versions aligned - No changes

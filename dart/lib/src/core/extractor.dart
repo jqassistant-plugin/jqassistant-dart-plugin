@@ -16,11 +16,12 @@ import 'package:path/path.dart';
 
 final class ExtractorOptions {
   bool prettyPrint = false;
+  String? sdkPath = null;
 }
 
 Future<void> processPackagesAndOutputResult(
     String scanRoot, ExtractorOptions options) async {
-  List<LCEPackage> packages = await processPackages(scanRoot);
+  List<LCEPackage> packages = await processPackages(scanRoot, options);
 
   JsonEncoder encoder;
   if (options.prettyPrint) {
@@ -36,7 +37,8 @@ Future<void> processPackagesAndOutputResult(
   file.writeAsString(jsonString);
 }
 
-Future<List<LCEPackage>> processPackages(String scanRoot) async {
+Future<List<LCEPackage>> processPackages(
+    String scanRoot, ExtractorOptions options) async {
   final List<LCEPackage> result = [];
 
   final packagePaths = await determinePackagePaths(scanRoot);
@@ -48,7 +50,8 @@ Future<List<LCEPackage>> processPackages(String scanRoot) async {
     // Processing
     final libraryPaths = await determineLibraryPaths(packagePath);
     AnalysisContextCollection analysisContextCollection =
-        AnalysisContextCollection(includedPaths: [packagePath]);
+        AnalysisContextCollection(
+            includedPaths: [packagePath], sdkPath: options.sdkPath);
     AnalysisContext context = analysisContextCollection.contextFor(packagePath);
     AnalysisSession session = context.currentSession;
     for (final libraryPath in libraryPaths) {
