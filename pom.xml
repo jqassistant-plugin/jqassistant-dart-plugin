@@ -14,11 +14,8 @@
     <packaging>pom</packaging>
 
     <name>jQAssistant Dart Plugin Parent</name>
-    <url>https://jqassistant.org/</url>
-
-    <description>
-        Plugin for jQAssistant providing scanners and rules for Dart.
-    </description>
+    <description>Plugin for jQAssistant providing scanners and rules for Dart.</description>
+    <url>https://github.com/jqassistant-plugin/jqassistant-dart-plugin</url>
 
     <organization>
         <name>jQAssistant Development Team</name>
